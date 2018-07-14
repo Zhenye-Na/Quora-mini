@@ -14,8 +14,8 @@ class User extends Model
     
     public function isValid() {
 
-        $username = Request::get('username');
-        $password = Request::get('password');
+        $username = rq('username');
+        $password = rq('password');
 
         if ($username && $password)
             return [$username, $password];
@@ -42,7 +42,6 @@ class User extends Model
 
 
         /* 3. Examine whether username is valid */
-
         $user_exists = DB::table('users')
             ->where('username', $username)
             ->exists();
@@ -52,7 +51,6 @@ class User extends Model
 
 
         /* 4. Encrypt password and save into database */
-
         $hashed_password = Hash::make($password);  // Also bcrypt($password)
         $user = $this;
         $user->password = $hashed_password;
@@ -71,7 +69,6 @@ class User extends Model
     {
 
         /* 1. Examine whether username and password */
-
         $examination = $this->isValid();
 
         if (!$examination)
@@ -80,19 +77,15 @@ class User extends Model
         $username = $examination[0];
         $password = $examination[1];
 
-        $user = DB::table('users')
-            ->where('username', $username)
-            ->first();
+        $user = DB::table('users')->where('username', $username)->first();
 
 
         /* 2. Examine whether user exists */
-
         if (!$user)
             return ['status' => 0, 'msg' => 'User not exists!'];
 
 
         /* 3. Examine whether password is correct */
-
         $hashed_password = $user->password;
 
         if (!Hash::check($password, $hashed_password))
@@ -100,10 +93,8 @@ class User extends Model
 
 
         /* 4. Save user info to session */
-
         session()->put('username', $user->username);
         session()->put('user_id', $user->id);
-
         
         return ['status' => 1, 'id' => $user->id];
     }
@@ -123,16 +114,12 @@ class User extends Model
     public function logout()
     {
         /* Delete username and user_id from session */
-
         session()->forget('username');
         session()->forget('user_id');
         
-
         return ['status' => 1];
         // return redirect('/');
         
     }
-    
-    
-    
+
 }
