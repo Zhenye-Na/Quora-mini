@@ -100,6 +100,31 @@ class Question extends Model
     }
 
 
+    /** Read question API */
 
+    public function remove()
+    {
+        /* Check whether user has logged in */
+        if (!user_init()->is_logged_in())
+            return ['status' => 0, 'msg' => 'Please log in first!'];
+
+        /* check id is included in arguments */
+        if (!rq('id'))
+            return ['status' => 0, 'msg' => 'ID is required!'];
+
+        /* Get model */
+        $question = $this->find(rq('id'));
+        if (!$question)
+            return ['status' => 0, 'msg' => 'Question not exists!'];
+
+        /* Check current user is the owner of question or not */
+        if (session('user_id') != $question->user_id)
+            return ['status' => 0, 'msg' => 'Permission denied!'];
+
+        return $question->delete() ?
+            ['status' => 1]:
+            ['status' => 0, 'msg' => 'db deleted failed!'];
+
+    }
 
 }
