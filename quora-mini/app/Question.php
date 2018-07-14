@@ -74,18 +74,30 @@ class Question extends Model
     }
 
 
+    /** Read question API */
 
+    public function read()
+    {
+        /* Check whether 'id' is in request arguments, if true return */
+        if (rq('id'))
+            return ['status' => 1, 'msg' => $this->find(rq('id'))];
 
+        /* LIMIT */
+        $limit = rq('limit')?: 15;
+        
+        /* SKIP */
+        $skip = (rq('page') ? rq('page') - 1 : 1) * $limit;
+        
+        /* Construct query and return collection of data */
+        $r = $this
+            ->orderBy('created_at')
+            ->limit($limit)
+            ->skip($skip)
+            ->get(['id', 'title', 'desc', 'user_id', 'created_at', 'updated_at'])
+            ->keyBy('id');
 
-
-
-
-
-
-
-
-
-
+        return ['status' => 1, 'msg' => $r];
+    }
 
 
 
