@@ -11,6 +11,21 @@
 |
 */
 
+function user_init() {
+    return $user = new App\User;
+}
+
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::any('api/signup', function() {
+    return user_init()->signup();
+});
+
+
+Route::any('api/login', function() {
+    return user_init()->login();
 });
