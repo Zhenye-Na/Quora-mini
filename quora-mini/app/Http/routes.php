@@ -29,3 +29,13 @@ Route::any('api/signup', function() {
 Route::any('api/login', function() {
     return user_init()->login();
 });
+
+
+Route::any('api/logout', function() {
+    return user_init()->logout();
+});
+
+
+Route::any('test', function() {
+    dd(user_init()->is_logged_in());
+});

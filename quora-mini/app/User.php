@@ -24,9 +24,10 @@ class User extends Model
     }
 
 
-    /* Register API */
+    /** Register API */
     
-    public function signup() {
+    public function signup()
+    {
 
         /* 1. Examine whether username is null */
         /* 2. Examine whether password is null */
@@ -64,10 +65,10 @@ class User extends Model
     }
 
 
+    /** Login API */
 
-    /* Login API */
-
-    public function login() {
+    public function login()
+    {
 
         /* 1. Examine whether username and password */
 
@@ -97,15 +98,41 @@ class User extends Model
         if (!Hash::check($password, $hashed_password))
             return ['status' => 0, 'msg' => 'password or username is not correct!'];
 
+
         /* 4. Save user info to session */
 
         session()->put('username', $user->username);
         session()->put('user_id', $user->id);
 
-        dd(session()->all());
-
-
+        
         return ['status' => 1, 'id' => $user->id];
     }
+
+
+    /** Check whether user has logged in */
+    
+    public function is_logged_in()
+    {
+        /* Return user_id if it exists or return false */
+        return session('user_id') ?: false;
+    }
+    
+    
+    /** Log out API */
+    
+    public function logout()
+    {
+        /* Delete username and user_id from session */
+
+        session()->forget('username');
+        session()->forget('user_id');
+        
+
+        return ['status' => 1];
+        // return redirect('/');
+        
+    }
+    
+    
     
 }
