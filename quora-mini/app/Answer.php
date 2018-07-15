@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
 
 class Answer extends Model
 {
@@ -25,17 +24,17 @@ class Answer extends Model
             return ['status' => 0, 'msg' => 'Question not exists!'];
         
         /* Check this user has already answered this question or not */
-        $answered = DB::table('questions')
+        $answered = $this
             ->where(['question_id' => rq('question_id'), 'user_id' => session('user_id')])
             ->count();
         
-        /* Dupicate answers */
+        /* Duplicate answers */
         if ($answered)
             return ['status' => 0, 'msg' => 'You have already answered this question!'];
         
         /* Get variables */
         $this->content = rq('content');
-        $this->question_id = rq('user_id');
+        $this->question_id = rq('question_id');
         $this->user_id = session('user_id');
         
         /* Save to database */
@@ -72,10 +71,35 @@ class Answer extends Model
 
     }
 
+    
+    /** Read answer API */
 
-
-
-
+    public function read()
+    {
+        
+        if ((!rq('id')) && !rq('question_id'))
+            return ['status' => 0, 'msg' => 'id or question_id is required!'];
+        
+        if (rq('id'))
+        {
+            $answer = $this->find(rq('id'));
+            
+            if (!$answer)
+                return ['status' => 0, 'msg' => 'Answer not exists!'];
+            return ['status' => 1, 'data' => $answer];
+        }
+        
+        if (!question_init()->find(rq('question_id')))
+            return ['status' => 0, 'msg' => 'Question not exists!'];
+        
+        $answers = $this
+            ->where('question_id', rq('question_id'))
+            ->get()
+            ->keyBy('id');
+        
+        
+        return ['status' => 1, 'data' => $answers];
+    }
 
     
 }
