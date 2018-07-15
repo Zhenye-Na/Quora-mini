@@ -18,7 +18,7 @@ class Question extends Model
 
         /* Check whether there exists question title */
         if (!rq('title'))
-            return ['status' => 0, 'msg' => 'Qustion title is required!'];
+            return ['status' => 0, 'msg' => 'Question title is required!'];
 
         $this->title = rq('title');
         $this->user_id = session('user_id');
@@ -26,7 +26,7 @@ class Question extends Model
         
         /* Add question description if exists */
         if (rq('desc'))
-            $this->desc  = rq('desc');
+            $this->desc = rq('desc');
 
         /* Save to database */
         return $this->save() ?
