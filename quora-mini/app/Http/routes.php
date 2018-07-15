@@ -25,6 +25,13 @@ function question_init() {
 }
 
 
+/** Create Answer instance */
+
+function answer_init() {
+    return new App\Answer;
+}
+
+
 /** Request all */
 function rq($key=null, $default=null) {
     if (!$key) return Request::all();
@@ -87,6 +94,31 @@ Route::any('api/question/read', function() {
 Route::any('api/question/remove', function() {
     return question_init()->remove();
 });
+
+
+/** Create answer */
+
+Route::any('api/answer/add', function() {
+    return answer_init()->add();
+});
+
+
+/** Update answer */
+
+Route::any('api/answer/change', function() {
+    return answer_init()->change();
+});
+
+
+/** Read question */
+
+Route::any('api/answer/read', function() {
+    return answer_init()->read();
+});
+
+
+
+
 
 
 /** Hold for testing functionality */
