@@ -46,5 +46,36 @@ class Answer extends Model
     }
 
 
+    /** Update answer API */
 
+    public function change()
+    {
+        /* Check whether user has logged in */
+        if (!user_init()->is_logged_in())
+            return ['status' => 0, 'msg' => 'Please log in first!'];
+
+
+        if (!rq('id') || !rq('content'))
+            return ['status' => 0, 'msg' => 'id and content are required!'];
+
+
+        $answer = $this->find(rq('id'));
+        if ($answer->user_id != session('user_id'))
+            return ['status' => 0, 'msg' => 'Permission denied!'];
+
+
+        $answer->content = rq('content');
+
+        return $answer->save() ?
+            ['status' => 1] :
+            ['status' => 0, 'msg' => 'db update failed!'];
+
+    }
+
+
+
+
+
+
+    
 }
