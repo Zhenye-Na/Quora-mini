@@ -76,10 +76,11 @@ class Answer extends Model
 
     public function read()
     {
-        
+        /* Check answer id and question id */
         if ((!rq('id')) && !rq('question_id'))
             return ['status' => 0, 'msg' => 'id or question_id is required!'];
         
+        /* Check whether this answer exists return error message if not */
         if (rq('id'))
         {
             $answer = $this->find(rq('id'));
@@ -89,6 +90,7 @@ class Answer extends Model
             return ['status' => 1, 'data' => $answer];
         }
         
+        /* Check whether this question exists return error message if not */
         if (!question_init()->find(rq('question_id')))
             return ['status' => 0, 'msg' => 'Question not exists!'];
         
