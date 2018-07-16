@@ -62,6 +62,35 @@ class Comment extends Model
     }
 
 
+    /** Read comment */
+
+    public function read()
+    {
+        if (!rq('question_id') && !rq('answer_id'))
+            return ['status' => 0, 'msg' => 'Question or answer not exists!'];
+
+        if (rq('question_id'))
+        {
+            $question = question_init()->find(rq('question_id'));
+            if (!$question)
+                return ['status' => 0, 'msg' => 'Question not exists!'];
+
+            $data = $this->where('question_id', rq('question_id'));
+        } else
+        {
+            $answer = question_init()->find(rq('answer_id'));
+            if (!$answer)
+                return ['status' => 0, 'msg' => 'Answer not exists!'];
+
+            $data = $this->where('answer_id', rq('answer_id'));
+        }
+
+        $data = $data->get()->keyBy('id');
+
+        return ['status' => 0, 'data' => $data];
+    }
+
+
 
 
 }
