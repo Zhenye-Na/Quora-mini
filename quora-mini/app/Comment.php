@@ -91,6 +91,29 @@ class Comment extends Model
     }
 
 
+    /** Remove comment API */
 
+    public function remove()
+    {
+        if (!user_init()->is_logged_in())
+            return ['status' => 0, 'msg' => 'Please log in first!'];
+
+        if (!rq('id'))
+            return ['status' => 0, 'msg' => 'id is required!'];
+
+        $comment = $this->find(rq('id'));
+        if (!$comment)
+            return ['status' => 0, 'msg' => 'Comment not exists!'];
+
+        if ($comment->user_id != session('user_id'))
+            return ['status' => 0, 'msg' => 'Permission denied!'];
+
+        /* 删除此评论下所有的回复 */
+        $this->where('reply_to', rq('id'))->delete();
+        
+        return $comment->delete() ?
+            ['status' => 1] :
+            ['status' => 0, 'msg' => 'db deleted failed!'];
+    }
 
 }
