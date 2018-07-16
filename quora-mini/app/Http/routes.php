@@ -27,6 +27,13 @@ function question_init() {
 
 /** Create Answer instance */
 
+function comment_init() {
+    return new App\Comment;
+}
+
+
+/** Create Answer instance */
+
 function answer_init() {
     return new App\Answer;
 }
@@ -37,7 +44,6 @@ function rq($key=null, $default=null) {
     if (!$key) return Request::all();
     return Request::get($key, $default);
 }
-
 
 
 /** homepage */
@@ -116,6 +122,12 @@ Route::any('api/answer/read', function() {
     return answer_init()->read();
 });
 
+
+/** Create comment */
+
+Route::any('api/comment/add', function() {
+    return comment_init()->add();
+});
 
 
 
