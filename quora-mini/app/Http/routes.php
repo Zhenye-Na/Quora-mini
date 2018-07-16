@@ -95,7 +95,7 @@ Route::any('api/question/read', function() {
 });
 
 
-/** Delete question */
+/** Remove question */
 
 Route::any('api/question/remove', function() {
     return question_init()->remove();
@@ -116,6 +116,13 @@ Route::any('api/answer/change', function() {
 });
 
 
+/** Vote answer */
+
+Route::any('api/answer/vote', function() {
+    return answer_init()->vote();
+});
+
+
 /** Read question */
 
 Route::any('api/answer/read', function() {
@@ -130,7 +137,18 @@ Route::any('api/comment/add', function() {
 });
 
 
+/** Read comment */
 
+Route::any('api/comment/read', function() {
+    return comment_init()->read();
+});
+
+
+/** Remove comment */
+
+Route::any('api/comment/remove', function() {
+    return comment_init()->remove();
+});
 
 
 /** Hold for testing functionality */
