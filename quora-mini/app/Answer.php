@@ -103,5 +103,48 @@ class Answer extends Model
         return ['status' => 1, 'data' => $answers];
     }
 
+    /** Vote API */
+
+    public function vote()
+    {
+        if (!user_init()->is_logged_in())
+            return ['status' => 0, 'msg' => 'Please log in first!'];
+        
+        
+        if (!rq('id') || !rq('vote'))
+            return ['status' => 0, 'msg' => 'id or vote is required!'];
+        
+        /* Check whether this user voted this question before */
+
+        $answer = $this->find(rq('id'));
+        if (!$answer)
+            return ['status' => 0, 'msg' => 'Answer not exists!'];
+
+        /* Up-vote or Down-vote*/
+        $vote = rq('vote') <= 1 ? 1 : 2;
+
+        /*如果投过票, 就删除此投票, 并且更新结果*/
+        $answer->users()
+            ->newPivotStatement()
+            ->where('user_id', session('user_id'))
+            ->where('answer_id', rq('id'))
+            ->delete();
+
+
+        $answer
+            ->users()
+            ->attach(session('user_id'), ['vote' => $vote]);
+
+        return ['status' => 1];
+    }
+
     
+    public function users()
+    {
+        return $this
+            ->belongsToMany('App\User')
+            ->withPivot('vote')
+            ->withTimestamps();
+    }
+
 }
