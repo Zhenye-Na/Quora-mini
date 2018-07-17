@@ -122,4 +122,13 @@ class User extends Model
         
     }
 
+
+    public function answers()
+    {
+        return $this
+            ->belongsToMany('App\Answer')
+            ->withPivot('vote')
+            ->withTimestamps();
+    }
+    
 }
