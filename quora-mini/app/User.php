@@ -35,7 +35,7 @@ class User extends Model
         $examination = $this->isValid();
 
         if (!$examination)
-            return ['status' => 0, 'msg' => 'Username or passsword is empty!'];
+            return err('Username or passsword is empty!');
 
         $username = $examination[0];
         $password = $examination[1];
@@ -47,18 +47,18 @@ class User extends Model
             ->exists();
 
         if ($user_exists)
-            return ['status' => 0, 'msg' => 'Username already exists'];
+            return err('Username already exists');
 
 
         /* 4. Encrypt password and save into database */
-        $hashed_password = Hash::make($password);  // Also bcrypt($password)
+        $hashed_password = Hash::make($password);
         $user = $this;
         $user->password = $hashed_password;
         $user->username = $username;
         if ($user->save())
-            return ['status' => 1, 'id' => $user->id];
+            return succ(['id' => $user->id]);
         else
-            return ['status' => 0, 'msg' => 'Database insert failed!'];
+            return err('Database insert failed!');
 
     }
 
@@ -72,7 +72,7 @@ class User extends Model
         $examination = $this->isValid();
 
         if (!$examination)
-            return ['status' => 0, 'msg' => 'Username or passsword is empty!'];
+            return err('Username or passsword is empty!');
 
         $username = $examination[0];
         $password = $examination[1];
@@ -82,21 +82,21 @@ class User extends Model
 
         /* 2. Examine whether user exists */
         if (!$user)
-            return ['status' => 0, 'msg' => 'User not exists!'];
+            return err('User not exists!');
 
 
         /* 3. Examine whether password is correct */
         $hashed_password = $user->password;
 
         if (!Hash::check($password, $hashed_password))
-            return ['status' => 0, 'msg' => 'password or username is not correct!'];
+            return err('password or username is not correct!');
 
 
         /* 4. Save user info to session */
         session()->put('username', $user->username);
         session()->put('user_id', $user->id);
         
-        return ['status' => 1, 'id' => $user->id];
+        return succ(['id' => $user->id]);
     }
 
 
@@ -109,6 +109,31 @@ class User extends Model
     }
     
     
+    /** Change password */
+    
+    public function change_password()
+    {
+        if (!$this->is_logged_in())
+            return err('Please log in first!');
+        
+        
+        if (!rq('old_password') || !rq('new_password'))
+            return err('Please type old/new password!');
+        
+        
+        $user = $this->find(session('user_id'));
+        
+        if (!Hash::check(rq('old_password'), $user->password))
+            return err('Invalid password!');
+        
+        $user->password = bcrypt(rq('new_password'));
+        return $user->save() ?
+            ['status' => 1] :
+            err('db update failed!');
+        
+    }
+    
+
     /** Log out API */
     
     public function logout()
