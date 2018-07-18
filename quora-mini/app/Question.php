@@ -83,11 +83,13 @@ class Question extends Model
             return ['status' => 1, 'msg' => $this->find(rq('id'))];
 
         /* LIMIT */
-        $limit = rq('limit')?: 15;
+        // $limit = rq('limit')?: 15;
         
         /* SKIP */
-        $skip = (rq('page') ? rq('page') - 1 : 1) * $limit;
-        
+        // $skip = (rq('page') ? rq('page') - 1 : 1) * $limit;
+
+        list($limit, $skip) = paginate(rq('page'), rq('limit'));
+
         /* Construct query and return collection of data */
         $r = $this
             ->orderBy('created_at')

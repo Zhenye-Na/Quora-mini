@@ -11,6 +11,7 @@
 |
 */
 
+
 /** Create user instance */
 
 function user_init() {
@@ -39,7 +40,49 @@ function answer_init() {
 }
 
 
-/** Request all */
+/** Paginate wrapper 
+ * @param $page: skip length
+ * @param $limit: number of questions/answers in a page
+ * @return array: array of two variables
+ */
+
+function paginate($page=1, $limit=16) {
+    $limit = $limit?: 16;
+    $skip = ($page ? $page - 1 : 0) * $limit;
+    return [$limit, $skip];
+}
+
+
+/** Error message
+ * @param $msg: error message
+ * @return array: array of status and error message
+ */
+
+function err($msg=null) {
+    return ['status' => 0, 'msg'=> $msg];
+}
+
+
+/** Success message
+ * @param $data_to_merge: return data
+ * @return array: array of status and data
+ */
+
+function succ($data_to_merge=null) {
+    $data = ['status' => 1];
+    if ($data_to_merge)
+        $data = array_merge($data, $data_to_merge);
+    
+    return ['status' => 1, 'data'=> $data];
+}
+
+
+/** Request all
+ * @param $key: the variable for checking
+ * @param $default: default variable
+ * @return boolean: return true if we can find the argument
+ */
+
 function rq($key=null, $default=null) {
     if (!$key) return Request::all();
     return Request::get($key, $default);
@@ -72,6 +115,14 @@ Route::any('api/login', function() {
 Route::any('api/logout', function() {
     return user_init()->logout();
 });
+
+
+/** Change password */
+
+Route::any('api/user/change_password', function() {
+    return user_init()->change_password();
+});
+
 
 
 /** Create question */
@@ -149,6 +200,11 @@ Route::any('api/comment/read', function() {
 Route::any('api/comment/remove', function() {
     return comment_init()->remove();
 });
+
+
+/** Timeline */
+
+Route::any('api/timeline', 'CommonController@timeline');
 
 
 /** Hold for testing functionality */
