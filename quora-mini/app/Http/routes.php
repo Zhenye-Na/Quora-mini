@@ -138,6 +138,13 @@ Route::any('api/user/validate_reset_password', function() {
 });
 
 
+/** Read user info */
+
+Route::any('api/user/read', function() {
+    return user_init()->read();
+});
+
+
 /** Create question */
 
 Route::any('api/question/create', function() {
