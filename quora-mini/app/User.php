@@ -10,6 +10,30 @@ use DB;
 class User extends Model
 {
     
+    /** Get user info API */
+
+    public function read()
+    {
+        if (!rq('id'))
+            return err('User id is required!');
+        
+        
+        $get = ['username', 'avatar_url', 'intro'];
+        
+        $user = $this->find(rq('id'), $get);
+        
+        $data = $user->toArray();
+        
+        $answer_count = answer_init()->where('user_id', rq('id'))->count();
+        $question_count = question_init()->where('user_id', rq('id'))->count();
+
+        $data['question_count'] = $question_count;
+        $data['answer_count'] = $answer_count;
+        
+        return succ($data);
+    }
+    
+    
     /* Examine username and password is valid */
     
     public function isValid() {
@@ -227,9 +251,7 @@ class User extends Model
 
     }
     
-    
-    
-    
+
     /** Log out API */
     
     public function logout()
@@ -251,5 +273,5 @@ class User extends Model
             ->withPivot('vote')
             ->withTimestamps();
     }
-    
+
 }
