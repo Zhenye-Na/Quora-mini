@@ -128,12 +128,108 @@ class User extends Model
         
         $user->password = bcrypt(rq('new_password'));
         return $user->save() ?
-            ['status' => 1] :
+            succ() :
             err('db update failed!');
         
     }
-    
 
+
+    /** Reset password API */
+
+    public function reset_password()
+    {
+
+        if ($this->is_robot())
+            return err('Please wait for at 10 secs to resend again!');
+
+        
+        if(!rq('phone'))
+            return err('Phone number is required!');
+        
+        $user = $this->where('phone', rq('phone'))->first();
+        
+        if (!$user)
+            return err('Invalid phone number');
+        
+        /* 生成验证码 */
+        $captcha = $this->generate_captcha();
+        $user->phone_captcha = $captcha;
+        
+        /* 保存验证码 */
+        if ($user->save())
+        {
+            succ();
+            $this->send_sms();  // 发送验证码至手机
+            $this->update_robot_time();
+        }
+        return err('da updated failed!');
+        
+    }
+
+    
+    /* Send sms demo */
+    public function send_sms()
+    {
+        return true;
+    }
+    
+    
+    /* Generate random number */
+    public function generate_captcha()
+    {
+        return rand(1000, 9999);
+    }
+    
+    /* 检查是否是机器人 */
+    public function is_robot($time=10)
+    {
+        $current_time = time();
+        $last_action_time = session('last_action_time');
+
+        return !($current_time - $last_action_time > $time);
+    }
+    
+    /* 更新刷新时间 */
+    public function update_robot_time()
+    {
+        session()->set('last_action_time', time());
+    }
+    
+    
+    /** Validate reset password API */
+    
+    public function validate_reset_password()
+    {
+        
+        if ($this->is_robot(2))
+            return err('Maximum frequency reached!');
+        
+        if (!rq('phone') || !rq('phone_captcha'))
+            return err('phone and captcha are required!');
+        
+        /* Check whether user exists */
+        $user = $this->where([
+            'phone'         => rq('phone'),
+            'phone_captcha' => rq('phone_captcha')
+        ])->first();
+        
+        if (!$user)
+            return err('Invalid phone or invalid phone captcha!');
+        
+        /* Encrypt new password */
+        $user->password = bcrypt(rq('new_password'));
+        $this->update_robot_time();
+        
+        return $user->save()?
+            succ():
+            err('db updated failed!');
+        
+
+    }
+    
+    
+    
+    
     /** Log out API */
     
     public function logout()
