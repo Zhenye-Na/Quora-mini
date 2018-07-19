@@ -124,6 +124,19 @@ Route::any('api/user/change_password', function() {
 });
 
 
+/** Reset password */
+
+Route::any('api/user/reset_password', function() {
+    return user_init()->reset_password();
+});
+
+
+/** Validate reset password */
+
+Route::any('api/user/validate_reset_password', function() {
+    return user_init()->validate_reset_password();
+});
+
 
 /** Create question */
 
