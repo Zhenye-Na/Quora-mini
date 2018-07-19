@@ -41,7 +41,7 @@ class Answer extends Model
         return $this->save() ?
             ['status' => 1, 'id' => $this->id] :
             ['status' => 0, 'msg' => 'db insert failed!'];
-        
+
     }
 
 

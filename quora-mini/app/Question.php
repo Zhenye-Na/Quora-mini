@@ -14,11 +14,11 @@ class Question extends Model
         
         /* Check whether user has logged in */
         if (!user_init()->is_logged_in())
-            return ['status' => 0, 'msg' => 'Please log in first!'];
+            return err('Please log in first!');
 
         /* Check whether there exists question title */
         if (!rq('title'))
-            return ['status' => 0, 'msg' => 'Question title is required!'];
+            return err('Question title is required!');
 
         $this->title = rq('title');
         $this->user_id = session('user_id');
