@@ -92,7 +92,7 @@ function rq($key=null, $default=null) {
 /** homepage */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 
