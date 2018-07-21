@@ -8,7 +8,7 @@
                           $stateProvider,
                           $urlRouterProvider) {
             $interpolateProvider.startSymbol('[:');
-            $interpolateProvider.startSymbol(':]');
+            $interpolateProvider.endSymbol(':]');
 
             $urlRouterProvider.otherwise('/home');
 
@@ -21,7 +21,25 @@
                     url: '/login',
                     templateUrl: 'login.tpl'
                 })
+                .state('signup', {
+                    url: '/signup',
+                    templateUrl: 'signup.tpl'
+                })
         })
-
     
+        .service('UserService', [
+            function () {
+                var me = this;
+                me.signup_data = {};
+                me.signup = function () {
+
+                }
+        }])
+
+        .controller('SignupController', [
+            '$scope',
+            'UserService',
+            function ($scope, UserService) {
+                $scope.User = UserService;
+        }])
 })();
