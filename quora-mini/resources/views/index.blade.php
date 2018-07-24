@@ -36,30 +36,35 @@
 
 <script type="text/ng-template" id="home.tpl">
     <div class="home container">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus assumenda culpa deleniti doloribus earum in labore laudantium libero nam necessitatibus perspiciatis, porro quisquam ratione repellendus rerum sapiente tempora, tenetur voluptas!
+        Here I am!
     </div>
 </script>
 
+
+<!--Sign up page-->
 
 <script type="text/ng-template" id="signup.tpl">
     <div ng-controller="SignupController" class="signup container">
         <div class="card">
             <h1>Sign up</h1>
-            [: User.signup_data :]
+<!--            [: User.signup_data :]-->
             <form name="signup_form" ng-submit="User.signup()">
-                <div>
+                <div class="input-group">
                     <label>Username: </label>
                     <input name="username"
                            type="text"
                            ng-minlength="4"
                            ng-maxlength="24"
                            ng-model="User.signup_data.username"
+                           ng-model-options="{debounce: 400}"
                            required>
-                    <div class="input-error-set">
+                    <div ng-if="signup_form.username.$touched" class="input-error-set">
                         <div ng-if="signup_form.username.$error.required">Username is required</div>
+                        <div ng-if="signup_form.username.$error.maxlength || signup_form.username.$error.minlength">Username should be in 4 - 24 cahracters</div>
+                        <div ng-if="User.signup_username_exists">Username already exists</div>
                     </div>
                 </div>
-                <div>
+                <div class="input-group">
                     <label>Password: </label>
                     <input name="password"
                            type="password"
@@ -67,17 +72,47 @@
                            ng-maxlength="255"
                            ng-model="User.signup_data.password"
                            required>
+                    <div ng-if="signup_form.password.$touched" class="input-error-set">
+                        <div ng-if="signup_form.password.$error.required">Password is required</div>
+                        <div ng-if="signup_form.password.$error.maxlength || signup_form.password.$error.minlength">Password should be in 6 - 255 cahracters</div>
+                    </div>
                 </div>
-                <button type="submit" ng-disabled="signup_form.$invalid">Sign up</button>
+                <button type="submit" class="primary" ng-disabled="signup_form.$invalid">Sign up</button>
             </form>
         </div>
     </div>
 </script>
 
 
-<script type="text/ng-template" id="login.tpl">
-    <div class="login container">
+<!--Log in page-->
 
+<script type="text/ng-template" id="login.tpl">
+    <div ng-controller="LoginController" class="login container">
+        <div class="card">
+            <h1>Log in</h1>
+            <form name="login_form" ng-submit="User.login()">
+                <div class="input-group">
+                    <label>Username:</label>
+                    <input type="text"
+                           name="username"
+                           ng-model="User.login_data.username"
+                           required>
+                </div>
+                <div class="input-group">
+                    <label>Password:</label>
+                    <input type="password"
+                           name="password"
+                           ng-model="User.login_data.password"
+                           required>
+                </div>
+                <div ng-if="User.login_failed" class="input-error-set">
+                    Username or password is invalid
+                </div>
+                <div class="input-group">
+                    <button type="submit" class="primary" ng-disabled="login_form.username.$error.required || login_form.password.$error.required">Log in</button>
+                </div>
+            </form>
+        </div>
     </div>
 </script>
 
