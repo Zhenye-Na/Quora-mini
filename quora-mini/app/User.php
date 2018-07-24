@@ -274,4 +274,18 @@ class User extends Model
             ->withTimestamps();
     }
 
+
+    public function questions()
+    {
+        return $this
+            ->belongsToMany('App\Question')
+            ->withPivot('vote')
+            ->withTimestamps();
+    }
+
+
+    public function exist() {
+        return succ(['count' => $this->where(rq())->count()]);
+    }
+
 }

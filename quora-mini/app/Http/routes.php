@@ -68,12 +68,12 @@ function err($msg=null) {
  * @return array: array of status and data
  */
 
-function succ($data_to_merge=null) {
-    $data = ['status' => 1];
+function succ($data_to_merge=[]) {
+    $data = ['status' => 1, 'data' => []];
     if ($data_to_merge)
-        $data = array_merge($data, $data_to_merge);
+        $data['data'] = array_merge($data['data'], $data_to_merge);
     
-    return ['status' => 1, 'data'=> $data];
+    return $data;
 }
 
 
@@ -114,6 +114,13 @@ Route::any('api/login', function() {
 
 Route::any('api/logout', function() {
     return user_init()->logout();
+});
+
+
+/** Check username exists or not */
+
+Route::any('api/user/exist', function() {
+    return user_init()->exist();
 });
 
 
