@@ -1,9 +1,16 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
 body {
     background: #eeeeee;
 }
 
 
 h1 {
+    font-size: 18px;
     margin-top: 0;
 }
 
@@ -27,9 +34,18 @@ h1 {
 
 
 .navbar {
-    /*background: rgba(0, 0, 0, .1);*/
+    background: #ac2925;
+    color: #f9f9f9;
 }
 
+
+.navbar a {
+    color: #f9f9f9;
+}
+
+a {
+    text-decoration: none;
+}
 
 .navbar-item {
     display: inline-block;
@@ -63,6 +79,12 @@ h1 {
 }
 
 
+.container.signup, .container.login, .container.reset-password {
+    width: 400px;
+    margin-top: 15px;
+}
+
+
 [ui-sref] {
     cursor: pointer;
 }
@@ -73,8 +95,14 @@ form,label {
 }
 
 
+label {
+    margin: 4px 0;
+}
+
+
 .input-error-set {
     color: #d43f3a;
+    margin: 4px 0;
 }
 
 
@@ -94,4 +122,32 @@ input {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    outline: none;
+}
+
+.input-group {
+    margin-bottom: 10px;
+}
+
+
+button {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #FFFFFF;
+}
+
+button.primary {
+    background: #ac2925;
+    color: #f9f9f9;
+}
+
+button[disabled] {
+    background: #eeeeee;
+    color: #444444;
+}
+
+input, button {
+    padding: 5px;
 }
