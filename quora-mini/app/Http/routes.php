@@ -77,6 +77,14 @@ function succ($data_to_merge=[]) {
 }
 
 
+/** Check whether user has logged in */
+
+function is_logged_in() {
+    /* Return user_id if it exists or return false */
+    return session('user_id') ?: false;
+}
+
+
 /** Request all
  * @param $key: the variable for checking
  * @param $default: default variable

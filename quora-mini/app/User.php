@@ -129,7 +129,7 @@ class User extends Model
     public function is_logged_in()
     {
         /* Return user_id if it exists or return false */
-        return session('user_id') ?: false;
+        return is_logged_in();
     }
     
     
@@ -260,7 +260,7 @@ class User extends Model
         session()->forget('username');
         session()->forget('user_id');
         
-        return ['status' => 1];
+        return succ();
         // return redirect('/');
         
     }

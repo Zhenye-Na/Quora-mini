@@ -16,17 +16,28 @@
     <div class="container">
         <div class="fl">
             <div class="navbar-item brand">Quora<sup>mini</sup></div>
-            <div class="navbar-item">
-                <input type="text">
-            </div>
+            <form ng-submit="Question.go_add_question()" id="quick_ask" ng-controller="QuestionAddController">
+                <div class="navbar-item">
+                    <input ng-model="Question.new_question.title" type="text" placeholder="Search Quora-mini">
+                </div>
+                <div class="navbar-item">
+                    <button type="submit">Add question</button>
+                </div>
+            </form>
         </div>
         <div class="fr">
             <a ui-sref="home" class="navbar-item">Home</a>
-            <a ui-sref="login" class="navbar-item">Log in</a>
-            <a ui-sref="signup" class="navbar-item">Sign up</a>
+            @if(is_logged_in())
+                <a ui-sref="login" class="navbar-item">{{session('username')}}</a>
+                <a href="{{url('/api/logout')}}" class="navbar-item">Log out</a>
+            @else
+                <a ui-sref="login" class="navbar-item">Log in</a>
+                <a ui-sref="signup" class="navbar-item">Sign up</a>
+            @endif
         </div>
     </div>
 </div>
+
 
 <div class="page">
     <div ui-view></div>
@@ -109,11 +120,47 @@
                     Username or password is invalid
                 </div>
                 <div class="input-group">
-                    <button type="submit" class="primary" ng-disabled="login_form.username.$error.required || login_form.password.$error.required">Log in</button>
+                    <button type="submit"
+                            class="primary"
+                            ng-disabled="login_form.username.$error.required || login_form.password.$error.required">Log in</button>
                 </div>
             </form>
         </div>
     </div>
 </script>
+
+
+<script type="text/ng-template" id="question.add.tpl">
+    <div ng-controller="QuestionAddController" class="question-add container">
+        <div class="card">
+            <form name="question_add_form" ng-submit="Question.add()">
+                <div class="input-group">
+                    <label>Title</label>
+                    <input type="text"
+                           name="title"
+                           ng-minlength="5"
+                           ng-maxlength="255"
+                           ng-model="Question.new_question.title"
+                           required>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea type="text"
+                              name="desc"
+                              ng-model="Question.new_question.desc">
+                    </textarea>
+                </div>
+                <div class="input-group">
+                    <button ng-disabled="question_add_form.title.$invalid"
+                            class="primary"
+                            type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+
 
 </html>
