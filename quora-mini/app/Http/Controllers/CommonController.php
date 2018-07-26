@@ -39,7 +39,7 @@ class CommonController extends Controller
 
 
         /* Merge questions and answers */
-        $data = $questions->merge($answers);
+        $data = $questions->toBase()->merge($answers);
 
         /* Sort by Created time */
         $data = $data->sortByDesc(function($item) {
@@ -50,7 +50,7 @@ class CommonController extends Controller
 
         $data = $data->values()->all();
 
-//        return $data;
-        return succ(['questions' => $questions, 'answers' => $answers, 'data' => $data]);
+        return $data;
+//        return succ(['questions' => $questions, 'answers' => $answers, 'data' => $data]);
     }
 }
