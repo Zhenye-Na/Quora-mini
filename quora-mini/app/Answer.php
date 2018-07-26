@@ -51,23 +51,23 @@ class Answer extends Model
     {
         /* Check whether user has logged in */
         if (!user_init()->is_logged_in())
-            return ['status' => 0, 'msg' => 'Please log in first!'];
+            return err('Please log in first!');
 
 
         if (!rq('id') || !rq('content'))
-            return ['status' => 0, 'msg' => 'id and content are required!'];
+            return err('id and content are required!');
 
 
         $answer = $this->find(rq('id'));
         if ($answer->user_id != session('user_id'))
-            return ['status' => 0, 'msg' => 'Permission denied!'];
+            return err('Permission denied!');
 
 
         $answer->content = rq('content');
 
         return $answer->save() ?
-            ['status' => 1] :
-            ['status' => 0, 'msg' => 'db update failed!'];
+            succ(['id' => $answer->id]) :
+            err('db update fail');
 
     }
 
@@ -108,22 +108,22 @@ class Answer extends Model
     public function vote()
     {
         if (!user_init()->is_logged_in())
-            return ['status' => 0, 'msg' => 'Please log in first!'];
+            return err('Please log in first!');
         
         
         if (!rq('id') || !rq('vote'))
-            return ['status' => 0, 'msg' => 'id or vote is required!'];
+            return err('id or vote is required!');
         
         /* Check whether this user voted this question before */
 
         $answer = $this->find(rq('id'));
         if (!$answer)
-            return ['status' => 0, 'msg' => 'Answer not exists!'];
+            return err('Answer not exists!');
 
         /* Up-vote or Down-vote*/
         $vote = rq('vote') <= 1 ? 1 : 2;
 
-        /*如果投过票, 就删除此投票, 并且更新结果*/
+        /* 如果投过票, 就删除此投票, 并且更新结果 */
         $answer->users()
             ->newPivotStatement()
             ->where('user_id', session('user_id'))
@@ -135,7 +135,7 @@ class Answer extends Model
             ->users()
             ->attach(session('user_id'), ['vote' => $vote]);
 
-        return ['status' => 1];
+        return succ();
     }
 
     

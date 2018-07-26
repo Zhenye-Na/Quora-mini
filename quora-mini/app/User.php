@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Request;
 use Hash;
-use DB;
 
 class User extends Model
 {
@@ -16,12 +15,10 @@ class User extends Model
     {
         if (!rq('id'))
             return err('User id is required!');
-        
-        
-        $get = ['username', 'avatar_url', 'intro'];
+
+        $get = ['id', 'username', 'avatar_url', 'intro'];
         
         $user = $this->find(rq('id'), $get);
-        
         $data = $user->toArray();
         
         $answer_count = answer_init()->where('user_id', rq('id'))->count();
@@ -34,7 +31,7 @@ class User extends Model
     }
     
     
-    /* Examine username and password is valid */
+    /** Examine username and password is valid */
     
     public function isValid() {
 
@@ -66,7 +63,7 @@ class User extends Model
 
 
         /* 3. Examine whether username is valid */
-        $user_exists = DB::table('users')
+        $user_exists = $this
             ->where('username', $username)
             ->exists();
 
@@ -101,7 +98,7 @@ class User extends Model
         $username = $examination[0];
         $password = $examination[1];
 
-        $user = DB::table('users')->where('username', $username)->first();
+        $user = $this->where('username', $username)->first();
 
 
         /* 2. Examine whether user exists */
@@ -190,65 +187,71 @@ class User extends Model
         
     }
 
-    
-    /* Send sms demo */
+
+    /** Validate reset password API */
+
+    public function validate_reset_password()
+    {
+
+        if ($this->is_robot(2))
+            return err('Maximum frequency reached!');
+
+        if (!rq('phone') || !rq('phone_captcha') || !rq('new_password'))
+            return err('phone, new password and captcha are required!');
+
+        /* Check whether user exists */
+        $user = $this->where([
+            'phone'         => rq('phone'),
+            'phone_captcha' => rq('phone_captcha')
+        ])->first();
+
+        if (!$user)
+            return err('Invalid phone or phone captcha!');
+
+        /* Encrypt new password */
+        $user->password = bcrypt(rq('new_password'));
+        $this->update_robot_time();
+
+        return $user->save()?
+            succ():
+            err('db updated failed!');
+    }
+
+
+    /** Send sms demo */
     public function send_sms()
     {
         return true;
     }
     
     
-    /* Generate random number */
+    /** Generate random number */
     public function generate_captcha()
     {
         return rand(1000, 9999);
     }
-    
-    /* 检查是否是机器人 */
+
+
+    /** 检查当前用户是否是机器人
+     * @param $time: waiting time
+     * @return boolean: bot or not
+     */
     public function is_robot($time=10)
     {
+        if (!session('last_action_time'))
+            return false;
+
         $current_time = time();
         $last_action_time = session('last_action_time');
 
-        return !($current_time - $last_action_time > $time);
+        $elapsed = $current_time - $last_action_time;
+        return !($elapsed > $time);
     }
     
-    /* 更新刷新时间 */
+    /** 更新刷新时间 */
     public function update_robot_time()
     {
         session()->set('last_action_time', time());
-    }
-    
-    
-    /** Validate reset password API */
-    
-    public function validate_reset_password()
-    {
-        
-        if ($this->is_robot(2))
-            return err('Maximum frequency reached!');
-        
-        if (!rq('phone') || !rq('phone_captcha'))
-            return err('phone and captcha are required!');
-        
-        /* Check whether user exists */
-        $user = $this->where([
-            'phone'         => rq('phone'),
-            'phone_captcha' => rq('phone_captcha')
-        ])->first();
-        
-        if (!$user)
-            return err('Invalid phone or invalid phone captcha!');
-        
-        /* Encrypt new password */
-        $user->password = bcrypt(rq('new_password'));
-        $this->update_robot_time();
-        
-        return $user->save()?
-            succ():
-            err('db updated failed!');
-        
-
     }
     
 

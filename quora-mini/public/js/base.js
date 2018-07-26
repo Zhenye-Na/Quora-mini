@@ -7,6 +7,7 @@
         .config(function ($interpolateProvider,
                           $stateProvider,
                           $urlRouterProvider) {
+            
             $interpolateProvider.startSymbol('[:');
             $interpolateProvider.endSymbol(':]');
 
@@ -84,6 +85,7 @@
                 };
         }])
 
+        
         .controller('SignupController', [
             '$scope',
             'UserService',
@@ -97,17 +99,17 @@
                         UserService.username_exists();
                 }, true);
         }])
-    
+        
+        
         .controller('LoginController', [
             '$scope',
             'UserService',
             function ($scope, UserService) {
                 $scope.User = UserService;
             }
-            
-            
         ])
     
+        
         .service('QuestionService', [
             '$http',
             '$state',
@@ -134,11 +136,45 @@
                 }
             }
         ])
+
+        
         .controller('QuestionAddController', [
             '$scope',
             'QuestionService',
             function (QuestionService, $scope) {
                 $scope.Question = QuestionService;
+            }
+        ])
+
+        
+        .service('TimelineService', [
+            '$http',
+            function ($http) {
+                var me = this;
+                me.data = [];
+                
+                me.get = function (config) {
+                    $http.post('/api/timeline', config)
+                        .then(function (r) {
+                            if (r.data.status) {
+                                me.data = me.data.concat(r.data.data);
+                            } else {
+                                console.error('Network error!');
+                            }
+                        }, function () {
+                            console.error('Network error!');
+                        })
+                }
+            }
+        ])
+        
+        
+        .controller('HomeController', [
+            '$scope',
+            'TimelineService',
+            function ($scope, TimelineService) {
+                $scope.Timeline = TimelineService;
+                TimelineService.get();
             }
         ])
     

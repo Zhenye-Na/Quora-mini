@@ -12,6 +12,7 @@
 </head>
 
 <body>
+
 <div class="navbar clearfix">
     <div class="container">
         <div class="fl">
@@ -46,8 +47,80 @@
 
 
 <script type="text/ng-template" id="home.tpl">
-    <div class="home container">
-        Here I am!
+    <div ng-controller="HomeController" class="home card container">
+        <h1>Newly Updated</h1>
+        <div class="hr"></div>
+        <div class="item-set">
+            <div class="item">
+
+                <div class="vote"></div>
+
+                <div class="feed-item-content">
+
+                    <div class="content-act">XX gives a thumb up</div>
+                    <div class="title">title title title titl etitle</div>
+
+                    <div class="content-owner">
+                        content-owner
+                        <span class="desc">Most of the time</span>
+                    </div>
+
+                    <div class="content-main">
+                        Most of the time when someone argues Superman losing a fight, cause of an inherent
+                        limitation of his character. "Clark is a vegetarian" justifications for Batman getting a
+                        kryptonite-bearing fist against his jaw. Thor, too, hasinherent limitations.
+                    </div>
+
+                    
+                    <div class="action-set">
+                        <div class="comment">comment</div>
+                    </div>
+
+
+
+                    <div class="comment-block">
+                        <div class="hr"></div>
+                        <div class="comment-item-set">
+                            <div class="rect"></div>
+
+                            <div class="comment-item clearfix">
+                                <div class="user">UsernameIsHere</div>
+                                <div class="comment-content">
+                                    Most of the time when someone argues Superman losing a fight, it’s because of an inherent
+                                    limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
+                                    inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
+                                </div>
+                            </div>
+
+                            <div class="comment-item clearfix">
+                                <div class="user">UsernameIsHere</div>
+                                <div class="comment-content">
+                                    Most of the time when someone argues Superman losing a fight, it’s because of an inherent
+                                    limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
+                                    inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
+                                </div>
+                            </div>
+
+                            <div class="comment-item clearfix">
+                                <div class="user">UsernameIsHere</div>
+                                <div class="comment-content">
+                                    Most of the time when someone argues Superman losing a fight, it’s because of an inherent
+                                    limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
+                                    inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+                <div class="hr"></div>
+            </div>
+
+        </div>
     </div>
 </script>
 
@@ -129,6 +202,8 @@
     </div>
 </script>
 
+
+<!--Add question-->
 
 <script type="text/ng-template" id="question.add.tpl">
     <div ng-controller="QuestionAddController" class="question-add container">

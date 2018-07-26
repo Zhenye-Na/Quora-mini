@@ -28,6 +28,16 @@ class CommonController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();        
 
+
+//        $answers = $answers->sortByDesc(function($item) {
+//            return $item->created_at;
+//        });
+//
+//        $questions = $questions->sortByDesc(function($item) {
+//            return $item->created_at;
+//        });
+
+
         /* Merge questions and answers */
         $data = $questions->merge($answers);
 
@@ -36,8 +46,11 @@ class CommonController extends Controller
             return $item->created_at;
         });
 
+//        dd($data->toArray());
+
         $data = $data->values()->all();
 
-        return ['status' => 1, 'data' => $data];
+//        return $data;
+        return succ(['questions' => $questions, 'answers' => $answers, 'data' => $data]);
     }
 }

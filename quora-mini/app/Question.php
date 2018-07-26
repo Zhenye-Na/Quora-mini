@@ -20,19 +20,18 @@ class Question extends Model
         if (!rq('title'))
             return err('Question title is required!');
 
-        $this->title = rq('title');
-        $this->user_id = session('user_id');
-        
-        
+
         /* Add question description if exists */
         if (rq('desc'))
             $this->desc = rq('desc');
 
+        $this->title = rq('title');
+        $this->user_id = session('user_id');
+
         /* Save to database */
         return $this->save() ?
-            ['status' => 1, 'id' => $this->id]:
-            ['status' => 0, 'msg' => 'DB insert failed!'];
-        
+            succ(['id' => $this->id]) :
+            err('db insert failed!');
     }
 
 
@@ -42,21 +41,21 @@ class Question extends Model
     {
         /* Check whether user has logged in */
         if (!user_init()->is_logged_in())
-            return ['status' => 0, 'msg' => 'Please log in first!'];
+            return err('Please log in first!');
 
         /* Check whether id exists */
         if (!rq('id'))
-            return ['status' => 0, 'msg' => 'User id is required!'];
+            return err('User id is required!');
 
         /* Get particular model from 'id' */
         $question = $this->find(rq('id'));
 
         /* Check whether question exists */
         if (!$question)
-            return ['status' => 0, 'msg' => 'Question not exists!'];
+            return err('Question not exists!');
 
         if ($question->user_id != session('user_id'))
-            return ['status' => 0, 'msg' => 'Permission Denied!'];
+            return err('Permission Denied!');
 
 
         if (rq('title'))
@@ -68,8 +67,8 @@ class Question extends Model
 
         /* Save to database */
         return $this->save() ?
-            ['status' => 1]:
-            ['status' => 0, 'msg' => 'DB update failed!'];
+            succ(['id' => $question->id]) :
+            err('db update failed!');
 
     }
 
@@ -82,50 +81,44 @@ class Question extends Model
         if (rq('id'))
             return ['status' => 1, 'msg' => $this->find(rq('id'))];
 
-        /* LIMIT */
-        // $limit = rq('limit')?: 15;
-        
-        /* SKIP */
-        // $skip = (rq('page') ? rq('page') - 1 : 1) * $limit;
-
         list($limit, $skip) = paginate(rq('page'), rq('limit'));
 
         /* Construct query and return collection of data */
         $r = $this
             ->orderBy('created_at')
-            ->limit($limit)
             ->skip($skip)
-            ->get(['id', 'title', 'desc', 'user_id', 'created_at', 'updated_at'])
+            ->limit($limit)
+            ->get(['id', 'user_id', 'desc', 'title', 'created_at', 'updated_at'])
             ->keyBy('id');
 
-        return ['status' => 1, 'msg' => $r];
+        return succ(['data' => $r]);
     }
 
 
-    /** Read question API */
+    /** Remove question API */
 
     public function remove()
     {
         /* Check whether user has logged in */
-        if (!user_init()->is_logged_in())
-            return ['status' => 0, 'msg' => 'Please log in first!'];
+        if (!is_logged_in())
+            return err('Please log in first!');
 
         /* check id is included in arguments */
         if (!rq('id'))
-            return ['status' => 0, 'msg' => 'ID is required!'];
+            return err('ID is required!');
 
         /* Get model */
         $question = $this->find(rq('id'));
         if (!$question)
-            return ['status' => 0, 'msg' => 'Question not exists!'];
+            return err('Question not exists!');
 
         /* Check current user is the owner of question or not */
         if (session('user_id') != $question->user_id)
-            return ['status' => 0, 'msg' => 'Permission denied!'];
+            return err('Permission denied!');
 
         return $question->delete() ?
-            ['status' => 1]:
-            ['status' => 0, 'msg' => 'db deleted failed!'];
+            succ(['id' => $question->id]) :
+            err('db deleted failed!');
 
     }
 

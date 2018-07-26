@@ -12,7 +12,7 @@
 */
 
 
-/** Create user instance */
+/** Create User instance */
 
 function user_init() {
     return new App\User;
@@ -26,7 +26,7 @@ function question_init() {
 }
 
 
-/** Create Answer instance */
+/** Create Comment instance */
 
 function comment_init() {
     return new App\Comment;
@@ -47,7 +47,7 @@ function answer_init() {
  */
 
 function paginate($page=1, $limit=16) {
-    $limit = $limit?: 16;
+    $limit = $limit ? : 16;
     $skip = ($page ? $page - 1 : 0) * $limit;
     return [$limit, $skip];
 }
