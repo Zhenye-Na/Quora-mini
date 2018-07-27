@@ -92,7 +92,7 @@ a {
 
 
 .container {
-    width: 750px;
+    max-width: 750px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -102,13 +102,13 @@ a {
 .container.question-add,
 .container.login,
 .container.reset-password {
-    width: 400px;
+    max-width: 500px;
     margin-top: 15px;
 }
 
 
 .container.home {
-    width: 600px;
+    max-width: 600px;
     margin-top: 15px;
 }
 
@@ -190,9 +190,9 @@ form,label {
 }
 
 
-/*.comment-block {*/
-    /*display: none;*/
-/*}*/
+.comment-block {
+    display: none;
+}
 
 
 .comment-item {
@@ -212,7 +212,6 @@ form,label {
     float: right;
     width: 90%;
 }
-
 
 
 label {
@@ -244,6 +243,7 @@ input, textarea {
     border-radius: 3px;
     outline: none;
 }
+
 
 .input-group {
     margin-bottom: 10px;
@@ -280,3 +280,13 @@ button[disabled] {
 input, button {
     padding: 6px;
 }
+
+
+.tac {
+    text-align: center;
+
+}
+
+
+
+

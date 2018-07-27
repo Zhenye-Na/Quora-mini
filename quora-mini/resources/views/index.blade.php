@@ -19,13 +19,14 @@
             <div class="navbar-item brand">Quora<sup>mini</sup></div>
             <form ng-submit="Question.go_add_question()" id="quick_ask" ng-controller="QuestionAddController">
                 <div class="navbar-item">
-                    <input ng-model="Question.new_question.title" type="text" placeholder="Search Quora-mini">
+                    <input ng-model="Question.new_question.title" type="text">
                 </div>
                 <div class="navbar-item">
                     <button type="submit">Add question</button>
                 </div>
             </form>
         </div>
+
         <div class="fr">
             <a ui-sref="home" class="navbar-item">Home</a>
             @if(is_logged_in())
@@ -51,24 +52,21 @@
         <h1>Newly Updated</h1>
         <div class="hr"></div>
         <div class="item-set">
-            <div class="item">
-
+            <div ng-repeat="item in Timeline.data" class="item">
                 <div class="vote"></div>
-
                 <div class="feed-item-content">
 
-                    <div class="content-act">XX gives a thumb up</div>
-                    <div class="title">title title title titl etitle</div>
+                    <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
+                    <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
+                    <div class="title">[: item.title :]</div>
 
                     <div class="content-owner">
-                        content-owner
-                        <span class="desc">Most of the time</span>
+                        [: item.user.username :]
+                        <span class="desc">[: item.user.desc :]</span>
                     </div>
 
                     <div class="content-main">
-                        Most of the time when someone argues Superman losing a fight, cause of an inherent
-                        limitation of his character. "Clark is a vegetarian" justifications for Batman getting a
-                        kryptonite-bearing fist against his jaw. Thor, too, hasinherent limitations.
+                        [: ite.desc :]
                     </div>
 
                     
@@ -91,26 +89,7 @@
                                     inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
                                 </div>
                             </div>
-
-                            <div class="comment-item clearfix">
-                                <div class="user">UsernameIsHere</div>
-                                <div class="comment-content">
-                                    Most of the time when someone argues Superman losing a fight, it’s because of an inherent
-                                    limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
-                                    inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
-                                </div>
-                            </div>
-
-                            <div class="comment-item clearfix">
-                                <div class="user">UsernameIsHere</div>
-                                <div class="comment-content">
-                                    Most of the time when someone argues Superman losing a fight, it’s because of an inherent
-                                    limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
-                                    inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
-                                </div>
-                            </div>
-
-
+                            
                         </div>
                     </div>
                     
@@ -121,6 +100,14 @@
             </div>
 
         </div>
+
+<!--        <div ng-if="Timeline.pending" class="tac">-->
+<!--            <img src="https://c.s-microsoft.com/en-us/CMSImages/minifindstore_spin.gif?version=45117834-d17e-3a16-5765-62399907b530" width="5%">-->
+<!--        </div>-->
+        <div ng-if="Timeline.no_more_data" class="tac">
+            刷呀刷... 刷不出来了 _(:з」∠)_
+        </div>
+
     </div>
 </script>
 
@@ -226,7 +213,7 @@
                     </textarea>
                 </div>
                 <div class="input-group">
-                    <button ng-disabled="question_add_form.title.$invalid"
+                    <button ng-disabled="question_add_form.$invalid"
                             class="primary"
                             type="submit">Submit</button>
                 </div>

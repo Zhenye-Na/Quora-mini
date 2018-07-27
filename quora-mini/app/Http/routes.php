@@ -81,7 +81,7 @@ function succ($data_to_merge=[]) {
 
 function is_logged_in() {
     /* Return user_id if it exists or return false */
-    return session('user_id') ?: false;
+    return session('user_id') ? : false;
 }
 
 
@@ -162,7 +162,7 @@ Route::any('api/user/read', function() {
 
 /** Create question */
 
-Route::any('api/question/create', function() {
+Route::any('api/question/add', function() {
     return question_init()->add();
 });
 

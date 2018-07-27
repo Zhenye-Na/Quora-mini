@@ -16,6 +16,7 @@ class CommonController extends Controller
 
         /* Retrieve questions */
         $questions = question_init()
+            ->with('user')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at', 'desc')
@@ -23,20 +24,12 @@ class CommonController extends Controller
 
         /* Retrieve answers */
         $answers = answer_init()
+            ->with('users')
+            ->with('user')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at', 'desc')
-            ->get();        
-
-
-//        $answers = $answers->sortByDesc(function($item) {
-//            return $item->created_at;
-//        });
-//
-//        $questions = $questions->sortByDesc(function($item) {
-//            return $item->created_at;
-//        });
-
+            ->get();
 
         /* Merge questions and answers */
         $data = $questions->toBase()->merge($answers);
@@ -46,11 +39,9 @@ class CommonController extends Controller
             return $item->created_at;
         });
 
-//        dd($data->toArray());
-
         $data = $data->values()->all();
 
-        return $data;
-//        return succ(['questions' => $questions, 'answers' => $answers, 'data' => $data]);
+        return succ(['data' =>$data]);
+
     }
 }

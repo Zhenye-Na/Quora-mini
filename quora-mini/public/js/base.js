@@ -36,7 +36,8 @@
                     templateUrl: 'question.add.tpl'
                 })
         })
-    
+
+
         .service('UserService', [
             '$http', '$state',
             function ($http, $state) {
@@ -51,7 +52,6 @@
                                 me.signup_data = {};
                                 $state.go('login');
                             }
-
                         })
                 };
                 
@@ -74,7 +74,6 @@
                     $http.post('/api/user/exist',
                         {username: me.signup_data.username})
                         .then(function (r) {
-                            // console.log('r', r);
                             if (r.data.status && r.data.data.count)
                                 me.signup_username_exists = true;
                             else
@@ -118,51 +117,70 @@
                 me.new_question = {};
                 
                 me.go_add_question = function () {
-                    $state.go('question.add')
+                    $state.go('question.add');
                 };
                 
                 me.add = function () {
                     if (!me.new_question.title)
                         return;
+
                     $http.post('/api/question/add', me.new_question)
                         .then(function (r) {
                             if (r.data.status) {
+                                console.log(r.data);
                                 me.new_question = {};
-                                $state.go('home')
+                                $state.go('home', {}, {reload: true});
                             }
                         }, function (e) {
-                            
+                            console.log('e', e);
                         })
                 }
             }
         ])
 
-        
+
         .controller('QuestionAddController', [
             '$scope',
             'QuestionService',
-            function (QuestionService, $scope) {
+            function ($scope, QuestionService) {
                 $scope.Question = QuestionService;
             }
         ])
-
         
         .service('TimelineService', [
             '$http',
             function ($http) {
                 var me = this;
                 me.data = [];
-                
+                me.current_page = 1;
+
+
                 me.get = function (config) {
+                    if (me.pending) return;
+
+                    me.pending = true;
+
+                    config = config || {page: me.current_page};
+
                     $http.post('/api/timeline', config)
                         .then(function (r) {
                             if (r.data.status) {
-                                me.data = me.data.concat(r.data.data);
+                                if (r.data.data.data.length) {
+                                    me.data = me.data.concat(r.data.data.data);
+                                    me.current_page++;
+                                } else {
+                                    me.no_more_data = true;
+                                }
+                                
                             } else {
                                 console.error('Network error!');
                             }
                         }, function () {
                             console.error('Network error!');
+                        })
+
+                        .finally(function () {
+                            me.pending = false;
                         })
                 }
             }
@@ -175,6 +193,15 @@
             function ($scope, TimelineService) {
                 $scope.Timeline = TimelineService;
                 TimelineService.get();
+
+                var $win = $(window);
+
+                $win.on('scroll', function () {
+                    if ($win.scrollTop() - ($(document).height() - $win.height()) > -30)
+                        TimelineService.get();
+                })
+
+
             }
         ])
     

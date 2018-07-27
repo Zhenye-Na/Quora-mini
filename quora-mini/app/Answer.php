@@ -138,6 +138,12 @@ class Answer extends Model
         return succ();
     }
 
+
+    public function  user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     
     public function users()
     {
