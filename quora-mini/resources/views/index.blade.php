@@ -8,6 +8,7 @@
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script src="/node_modules/angular/angular.js"></script>
     <script src="/node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/js/answer.js"></script>
     <script src="/js/base.js"></script>
     <script src="/js/common.js"></script>
     <script src="/js/question.js"></script>

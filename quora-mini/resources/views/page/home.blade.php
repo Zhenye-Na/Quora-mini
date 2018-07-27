@@ -4,8 +4,14 @@
     <h1>Newly Updated</h1>
     <div class="hr"></div>
     <div class="item-set">
-        <div ng-repeat="item in Timeline.data" class="item">
-            <div class="vote"></div>
+        <div ng-repeat="item in Timeline.data" class="feed item clearfix">
+
+            <div ng-if="item.question_id" class="vote">
+                <div ng-click="Timeline.vote({id: item.id, vote: 1})" class="up">👍 [: item.upvote_count :]</div>
+                <div ng-click="Timeline.vote({id: item.id, vote: 2})" class="down">👎 [: item.downvote_count :]</div>
+            </div>
+            
+            
             <div class="feed-item-content">
 
                 <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
@@ -18,7 +24,7 @@
                 </div>
 
                 <div class="content-main">
-                    [: ite.desc :]
+                    [: item.content :]
                 </div>
 
 

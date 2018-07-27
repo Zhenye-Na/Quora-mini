@@ -5,7 +5,8 @@
         'ui.router',
         'common',
         'question',
-        'user'
+        'user',
+        'answer'
     ])
         .config(function ($interpolateProvider,
                           $stateProvider,

@@ -83,7 +83,10 @@ class Answer extends Model
         /* Check whether this answer exists return error message if not */
         if (rq('id'))
         {
-            $answer = $this->find(rq('id'));
+            $answer = $this
+                ->with('user')
+                ->with('users')
+                ->find(rq('id'));
             
             if (!$answer)
                 return ['status' => 0, 'msg' => 'Answer not exists!'];
@@ -103,6 +106,7 @@ class Answer extends Model
         return ['status' => 1, 'data' => $answers];
     }
 
+    
     /** Vote API */
 
     public function vote()

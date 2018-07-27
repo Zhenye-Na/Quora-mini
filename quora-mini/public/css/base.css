@@ -172,6 +172,10 @@ form,label {
 }
 
 
+.action-set .comment {
+    padding-top: 5px;
+}
+
 /*.comment-item-set {*/
     /*!*border: 1px solid #eeeeee;*!*/
     /*padding: 0 10px;*/
@@ -288,5 +292,44 @@ input, button {
 }
 
 
+.feed.item .vote {
+    float: left;
+    width: 10%;
+    padding-right: 10px;
+}
 
 
+.feed.item .vote > * {
+    background: rgba(200, 0, 0, .1);
+    text-align: center;
+    vertical-align: middle;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    /*padding: 2px;*/
+}
+
+
+.feed.item .vote .up {
+    color: lightpink;
+}
+
+
+.feed.item .vote .up:hover {
+    background: #d9534f;
+    color: azure;
+}
+
+
+.feed.item .vote .down {
+    background: rgba(0, 0, 0, .1);
+    color: #666666;
+}
+
+
+.feed.item .vote .down:hover {
+    background: rgba(0, 0, 0, .5);
+    color: azure;
+}
