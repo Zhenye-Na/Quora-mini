@@ -1,6 +1,10 @@
 ;(function () {
     'use strict';
 
+    window.his = {
+        id: parseInt($('html').attr('user-id'))
+    };
+
     angular.module('quora-mini', [
         'ui.router',
         'common',

@@ -11,6 +11,8 @@
                 me.data = [];
                 me.current_page = 1;
                 
+                
+                /** 获取首页数据 */
                 me.get = function (config) {
                     if (me.pending) return;
 
@@ -41,15 +43,18 @@
                         })
                 }
                 
-                /** Vote */
+                
+                /** 统计票数 */
                 me.vote = function (config) {
+
+                    /* 调用统计票数函数 */
                     AnswerService.vote(config)
                         .then(function (r) {
-                            
+
+                            /* 返回数据, 如果投票成功 */
                             if (r) {
                                 AnswerService.update_data(config.id);
                             }
-                            
                         })
                 }
 
@@ -67,6 +72,7 @@
 
                 var $win = $(window);
 
+                
                 /** 自动加载 Load automatically */
                 $win.on('scroll', function () {
                     // $win.scrollTop() - ($(document).height() - $win.height()) > -30
@@ -86,6 +92,7 @@
 
                     for (var k in new_data) {
 
+                        /* Update Timeline.data */
                         for (var i = 0; i < timeline_data.length; i++) {
                             if (k == timeline_data[i].id) {
                                 timeline_data[i].users = new_data[k].users;

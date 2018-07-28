@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="quora-mini">
+<html ng-app="quora-mini" user-id="{{session('user_id')}}">
 <head>
     <meta charset="UTF-8">
     <title>Quora-mini</title>

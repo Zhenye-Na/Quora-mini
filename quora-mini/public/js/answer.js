@@ -19,8 +19,13 @@
 
                         var votes, item = answers[i];
 
-                        /*  */
-                        if (!item['question_id'] || !item['users']) {
+                        if (!item['question_id']) {
+                            continue;
+                        }
+
+                        me.data[item.id] = item;
+
+                        if (!item['users']) {
                             continue;
                         }
 
@@ -55,13 +60,18 @@
                         return;
                     }
 
+                    var answer = me.data[config.id];
+
+                    /* 判断当前用户是否已经点过赞 */
+                    for (var i = 0; i < answer.users.length; i++) {
+                        if (answer.users[i].id == his.id && config.vote == answer.users[i].pivot.vote) {
+                            config.vote = 3;
+                        }
+                    }
+
                     return $http.post('/api/answer/vote', config)
                         .then(function (r) {
-                            if (r.data.status) {
-                                return true;
-                            }
-                            return false;
-
+                            return r.data.status;
                         }, function () {
                             return false;
                         })

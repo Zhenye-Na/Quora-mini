@@ -125,7 +125,12 @@ class Answer extends Model
             return err('Answer not exists!');
 
         /* Up-vote or Down-vote*/
-        $vote = rq('vote') <= 1 ? 1 : 2;
+        $vote = rq('vote');
+        
+        if ($vote != 1 && $vote != 2 && $vote != 3) {
+            return err('Invalid vote!');
+        }
+        
 
         /* 如果投过票, 就删除此投票, 并且更新结果 */
         $answer->users()
@@ -135,6 +140,11 @@ class Answer extends Model
             ->delete();
 
 
+        if ($vote == 3) {
+            return succ();
+        }
+        
+        
         $answer
             ->users()
             ->attach(session('user_id'), ['vote' => $vote]);
