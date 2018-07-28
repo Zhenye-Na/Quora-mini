@@ -41,7 +41,7 @@
                         .finally(function () {
                             me.pending = false;
                         })
-                }
+                };
                 
                 
                 /** 统计票数 */
@@ -56,7 +56,7 @@
                                 AnswerService.update_data(config.id);
                             }
                         })
-                }
+                };
 
             }
         ])

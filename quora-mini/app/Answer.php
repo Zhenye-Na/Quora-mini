@@ -71,15 +71,41 @@ class Answer extends Model
 
     }
 
-    
+
+    /** Read by user id */
+    public function read_by_user_id($user_id) {
+        $user = user_init()->find($user_id);
+
+        if (!$user) {
+            return err('Cannot find this user.');
+        }
+
+        $result = $this
+            ->with('question')
+            ->where('user_id', $user_id)
+            ->get()
+            ->keyBy('id');
+
+        return succ($result->toArray());
+    }
+
+
     /** Read answer API */
 
     public function read()
     {
         /* Check answer id and question id */
-        if ((!rq('id')) && !rq('question_id'))
-            return ['status' => 0, 'msg' => 'id or question_id is required!'];
-        
+        if ((!rq('id')) && !rq('question_id') && !rq('user_id'))
+            return err('id, question_id or user_id is required!');
+
+        if (rq('user_id')) {
+            $user_id = rq('user_id') === 'self' ?
+                session('user_id'):
+                rq('user_id');
+
+            return $this->read_by_user_id($user_id);
+        }
+
         /* Check whether this answer exists return error message if not */
         if (rq('id'))
         {
@@ -89,13 +115,13 @@ class Answer extends Model
                 ->find(rq('id'));
             
             if (!$answer)
-                return ['status' => 0, 'msg' => 'Answer not exists!'];
-            return ['status' => 1, 'data' => $answer];
+                return err('Answer not exists!');
+            return succ(['data' => $answer]);
         }
         
         /* Check whether this question exists return error message if not */
         if (!question_init()->find(rq('question_id')))
-            return ['status' => 0, 'msg' => 'Question not exists!'];
+            return err('Question not exists!');
         
         $answers = $this
             ->where('question_id', rq('question_id'))
@@ -103,7 +129,7 @@ class Answer extends Model
             ->keyBy('id');
         
         
-        return ['status' => 1, 'data' => $answers];
+        return succ(['data' => $answers]);
     }
 
     
@@ -133,7 +159,8 @@ class Answer extends Model
         
 
         /* 如果投过票, 就删除此投票, 并且更新结果 */
-        $answer->users()
+        $answer
+            ->users()
             ->newPivotStatement()
             ->where('user_id', session('user_id'))
             ->where('answer_id', rq('id'))
@@ -153,7 +180,7 @@ class Answer extends Model
     }
 
 
-    public function  user()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
@@ -167,4 +194,8 @@ class Answer extends Model
             ->withTimestamps();
     }
 
+
+    public function question() {
+        return $this->belongsTo('App\Question');
+    }
 }

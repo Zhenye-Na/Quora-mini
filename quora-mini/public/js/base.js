@@ -43,6 +43,10 @@
                     url: '/add',
                     templateUrl: '/tpl/page/question_add'
                 })
+                .state('user', {
+                    url: '/user/:id',
+                    templateUrl: '/tpl/page/user'
+                })
         })
 
     

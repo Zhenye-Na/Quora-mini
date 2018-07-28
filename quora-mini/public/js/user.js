@@ -1,7 +1,9 @@
 ;(function () {
     'use strict';
     
-    angular.module('user', [])
+    angular.module('user', [
+        'answer'
+    ])
 
         .service('UserService', [
             '$http', '$state',
@@ -47,6 +49,20 @@
                             console.log('e', e);
                         })
                 };
+
+
+                me.read = function (param) {
+                    return $http.post('/api/user/read', param)
+                        .then(function (r) {
+                            if (r.data.status) {
+                                if (param.id == 'self')
+                                    me.self_data = r.data.data;
+                                else 
+                                    me.data[param.id] = r.data.data;
+                            }
+                        })
+                };
+
             }])
 
 
@@ -73,6 +89,33 @@
             }
         ])
     
-    
+        .controller('UserController', [
+            '$scope',
+            '$stateParams',
+            'UserService',
+            'AnswerService',
+            'QuestionService',
+            function ($scope,
+                      $stateParams,
+                      UserService,
+                      AnswerService,
+                      QuestionService) {
+                $scope.User = UserService;
+
+                UserService.read($stateParams);
+                AnswerService.read({user_id: $stateParams.id})
+                    .then(function (r) {
+                        if (r) {
+                            UserService.his_answers = r;
+                        }
+                    });
+                QuestionService.read({user_id: $stateParams.id})
+                    .then(function (r) {
+                        if (r) {
+                            UserService.his_questions = r;
+                        }
+                    });
+            }
+        ])
     
 })();

@@ -72,7 +72,7 @@ function succ($data_to_merge=[]) {
     $data = ['status' => 1, 'data' => []];
     if ($data_to_merge)
         $data['data'] = array_merge($data['data'], $data_to_merge);
-    
+
     return $data;
 }
 
@@ -266,4 +266,9 @@ Route::get('tpl/page/login', function() {
 
 Route::get('tpl/page/question_add', function() {
     return view('page.question_add');
+});
+
+
+Route::get('tpl/page/user', function() {
+    return view('page.user');
 });

@@ -9,6 +9,7 @@
                 var me = this;
                 me.data = {};
 
+
                 /** 统计 vote 票数
                  *  @param: answers 问题 || 回答 的数据
                  *  @return: answers 加上票数统计, 不统计问题票数
@@ -84,9 +85,21 @@
 
                     return $http.post('/api/answer/read', {id: id})
                         .then(function (r) {
-                            me.data[id] = r.data.data;
+                            me.data[id] = r.data.data.data;
                         });
                     
+                };
+                
+                
+                /** Read answer */
+                me.read = function (param) {
+                    return $http.post('/api/answer/read', param)
+                        .then(function (r) {
+                            if (r.data.status) {
+                                me.data = angular.merge({}, me.data, r.data.data);
+                            }
+                            return r.data.data;
+                        })
                 }
 
             }

@@ -16,13 +16,17 @@ class User extends Model
         if (!rq('id'))
             return err('User id is required!');
 
+        $id = rq('id') === 'self' ?
+            session('user_id') :
+            rq('id');
+
         $get = ['id', 'username', 'avatar_url', 'intro'];
         
-        $user = $this->find(rq('id'), $get);
+        $user = $this->find($id, $get);
         $data = $user->toArray();
         
-        $answer_count = answer_init()->where('user_id', rq('id'))->count();
-        $question_count = question_init()->where('user_id', rq('id'))->count();
+        $answer_count = answer_init()->where('user_id', $id)->count();
+        $question_count = question_init()->where('user_id', $id)->count();
 
         $data['question_count'] = $question_count;
         $data['answer_count'] = $answer_count;

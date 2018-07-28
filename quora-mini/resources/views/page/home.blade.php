@@ -6,7 +6,7 @@
     <div class="item-set">
         <div ng-repeat="item in Timeline.data" class="feed item clearfix">
 
-            <div ng-if="item.question_id" class="vote">
+            <div ng-if="item.question_id" class="vote ng-scope">
                 <div ng-click="Timeline.vote({id: item.id, vote: 1})" class="up">👍 [: item.upvote_count :]</div>
                 <div ng-click="Timeline.vote({id: item.id, vote: 2})" class="down">👎 [: item.downvote_count :]</div>
             </div>

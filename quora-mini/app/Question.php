@@ -73,6 +73,23 @@ class Question extends Model
     }
 
 
+    /** Read by user id */
+    public function read_by_user_id($user_id) {
+        $user = user_init()->find($user_id);
+
+        if (!$user) {
+            return err('Cannot find this user.');
+        }
+
+        $result = $this
+            ->where('user_id', $user_id)
+            ->get()
+            ->keyBy('id');
+
+        return succ($result->toArray());
+    }
+
+
     /** Read question API */
 
     public function read()
@@ -80,6 +97,14 @@ class Question extends Model
         /* Check whether 'id' is in request arguments, if true return */
         if (rq('id'))
             return ['status' => 1, 'msg' => $this->find(rq('id'))];
+
+        if (rq('user_id')) {
+            $user_id = rq('user_id') === 'self' ?
+                session('user_id') :
+                rq('user_id');
+
+            return $this->read_by_user_id($user_id);
+        }
 
         list($limit, $skip) = paginate(rq('page'), rq('limit'));
 

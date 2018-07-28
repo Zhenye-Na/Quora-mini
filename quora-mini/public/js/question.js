@@ -10,10 +10,14 @@
                 var me = this;
                 me.new_question = {};
 
+                
+                /** Jump to new page which supports creating questions */
                 me.go_add_question = function () {
                     $state.go('question.add');
                 };
 
+                
+                /** Create question */
                 me.add = function () {
                     if (!me.new_question.title)
                         return;
@@ -28,7 +32,22 @@
                         }, function (e) {
                             console.log('e', e);
                         })
+                };
+                
+                
+                /** Read question */
+                me.read = function (params) {
+                    return $http.post('/api/question/read', params)
+                        .then(function (r) {
+                            if (r.data.status) {
+                                me.data = angular.merge({}, me.data, r.data.data);
+                                return r.data.data;
+                            }
+                            
+                            return false;
+                        })
                 }
+                
             }
         ])
 

@@ -12,9 +12,20 @@ body {
 }
 
 
+h1, h2 {
+    margin-top: 0;
+
+}
+
+
 h1 {
     font-size: 18px;
-    margin-top: 0;
+}
+
+
+h2 {
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
 
@@ -107,7 +118,8 @@ a {
 }
 
 
-.container.home {
+.container.home,
+.container.user {
     max-width: 600px;
     margin-top: 15px;
 }
@@ -135,7 +147,7 @@ form,label {
 }
 
 
-.home h1 {
+h1, h2 {
     font-size: 16px;
     color: #666666;
 }
@@ -332,4 +344,21 @@ input, button {
 .feed.item .vote .down:hover {
     background: rgba(0, 0, 0, .5);
     color: azure;
+}
+
+
+.info_item > *:first-child {
+    float: left;
+    width: 20%;
+}
+
+
+.info_item > * {
+    margin-bottom: 5px;
+}
+
+
+.info_item > *:last-child {
+    float: left;
+    width: 80%;
 }
