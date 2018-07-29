@@ -14,16 +14,16 @@
             
             <div class="feed-item-content">
 
-                <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
-                <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
-                <div class="title">[: item.title :]</div>
+                <div ng-if="item.question_id" class="content-act ng-binding">[: item.user.username :] added answer</div>
+                <div ng-if="!item.question_id" class="content-act ng-binding">[: item.user.username :] added question</div>
+                <div class="title ng-binding">[: item.title :]</div>
 
-                <div class="content-owner">
+                <div class="content-owner ng-binding">
                     [: item.user.username :]
                     <span class="desc">[: item.user.desc :]</span>
                 </div>
 
-                <div class="content-main">
+                <div class="content-main ng-binding">
                     [: item.content :]
                 </div>
 
