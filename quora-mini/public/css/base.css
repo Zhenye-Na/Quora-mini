@@ -372,6 +372,32 @@ input, button {
 }
 
 
-.gray {
+.gray,
+.gray a {
     color: gray;
 }
+
+
+.answer_form textarea {
+    height: 120px;
+}
+
+
+a {
+    color: #262626;
+}
+
+
+.anchor {
+    cursor: pointer;
+}
+/*.feed-item-content .answer_content {*/
+    /*float: right;*/
+    /*width: 90%;*/
+/*}*/
+
+
+/*.feed-item-content .answer_timestamp {*/
+    /*float: right;*/
+    /*width: 90%;*/
+/*}*/

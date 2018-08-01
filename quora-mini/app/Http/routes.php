@@ -209,7 +209,7 @@ Route::any('api/answer/vote', function() {
 });
 
 
-/** Read question */
+/** Read answer */
 
 Route::any('api/answer/read', function() {
     return answer_init()->read();

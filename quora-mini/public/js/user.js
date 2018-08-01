@@ -18,6 +18,7 @@
                         .then(function (r) {
                             if (r.data.status) {
                                 me.signup_data = {};
+                                alert("Please log in first!");
                                 $state.go('login');
                             }
                         })
@@ -64,6 +65,7 @@
                                 //     me.data[param.id] = r.data.data;
                             } else {
                                 if (r.data.msg == 'Please log in first!') {
+                                    alert("Please log in first!");
                                     $state.go('login');
                                 }
                             }

@@ -41,7 +41,7 @@
                     controller: 'QuestionController'
                 })
                 .state('question.detail', {
-                    url: '/detail/:id',
+                    url: '/detail/:id?answer_id',
                     templateUrl: '/tpl/page/question_detail'
                 })
                 .state('question.add', {
@@ -54,5 +54,12 @@
                 })
         })
 
+    
+        .controller('BaseController', [
+            '$scope',
+            function ($scope) {
+                $scope.his = his;
+            }
+        ])
     
 })();

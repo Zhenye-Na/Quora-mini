@@ -48,8 +48,9 @@
                 me.vote = function (config) {
 
                     /* 调用统计票数函数 */
-                    AnswerService.vote(config)
-                        .then(function (r) {
+                    var $r = AnswerService.vote(config);
+                    if ($r)
+                        $r.then(function (r) {
 
                             /* 返回数据, 如果投票成功 */
                             if (r) {

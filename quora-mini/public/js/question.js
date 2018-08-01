@@ -64,8 +64,9 @@
                 me.vote = function (config) {
 
                     /* 调用统计票数函数 */
-                    AnswerService.vote(config)
-                        .then(function (r) {
+                    var $r = AnswerService.vote(config);
+                    if ($r)
+                        $r.then(function (r) {
 
                             /* 返回数据, 如果投票成功 */
                             if (r) {
@@ -84,9 +85,7 @@
                                 for (var i = 0; i < me.its_answers.length; i++) {
                                     var answer = me.its_answers[i];
                                     if (answer.id == answer_id) {
-                                        console.log('answer', answer);
                                         me.its_answers[i] = r.data.data.data;
-                                        console.log('answer', answer);
                                         AnswerService.data[answer_id] = r.data.data.data;
                                     }
                                 }
@@ -111,6 +110,7 @@
             '$scope',
             'QuestionService',
             function ($scope, QuestionService) {
+                $scope.Question = QuestionService;
             }
         ])
 
@@ -119,8 +119,19 @@
             '$scope',
             '$stateParams',
             'QuestionService',
-            function ($scope, $stateParams, QuestionService) {
+            'AnswerService',
+            function ($scope,
+                      $stateParams,
+                      QuestionService,
+                      AnswerService) {
+                $scope.Answer = AnswerService;
                 QuestionService.read($stateParams);
+                
+                if ($stateParams.answer_id) {
+                    QuestionService.current_answer_id = $stateParams.answer_id;
+                } else {
+                    QuestionService.current_answer_id = null;
+                }
             }
         ])
     

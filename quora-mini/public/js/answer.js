@@ -9,6 +9,7 @@
             function ($http, $state) {
                 var me = this;
                 me.data = {};
+                me.answer_form = {};
 
 
                 /** 统计 vote 票数
@@ -65,6 +66,10 @@
 
                     var answer = me.data[config.id];
 
+                    if (answer.user_id == his.id) {
+                        return false;
+                    }
+                    
                     /* 判断当前用户是否已经点过赞 */
                     for (var i = 0; i < answer.users.length; i++) {
                         if (answer.users[i].id == his.id && config.vote == answer.users[i].pivot.vote) {
@@ -106,7 +111,52 @@
                             }
                             return r.data.data;
                         })
-                }
+                };
+
+
+                /** Add / Update answer */
+                me.add_or_update = function (question_id) {
+                    if (!question_id) {
+                        console.error('question_id is missing!');
+                        return;
+                    }
+
+                    me.answer_form.question_id = question_id;
+                    if (me.answer_form.id) {
+                        // Update answer
+                        $http.post('/api/answer/change', me.answer_form)
+                            .then(function (r) {
+                                me.answer_form = {};
+                                $state.reoad();
+
+                            })
+                    } else {
+                        // Add answer
+                        $http.post('/api/answer/add', me.answer_form)
+                            .then(function (r) {
+                                me.answer_form = {};
+
+                            })
+                    }
+                };
+
+
+                /** Delete answer */
+                me.delete = function (id) {
+                    if (!id) {
+                        console.error('answer id is missing!');
+                        return;
+                    }
+
+                    $htttp.post('/api/answer/remove', {id: id})
+                        .then(function (r) {
+                            if (r.data.status) {
+                                console.log('Delete successfully!');
+                                $state.reload();
+                            }
+                        })
+                };
+
 
             }
         ])

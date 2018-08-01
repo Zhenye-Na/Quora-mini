@@ -10,7 +10,7 @@
                 <div ng-click="Timeline.vote({id: item.id, vote: 1})" class="up">👍 [: item.upvote_count :]</div>
                 <div ng-click="Timeline.vote({id: item.id, vote: 2})" class="down">👎 [: item.downvote_count :]</div>
             </div>
-            
+
             <div class="feed-item-content">
                 <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
                 <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
@@ -20,8 +20,11 @@
                     [: item.user.username :]
                     <span class="desc">[: item.user.desc :]</span>
                 </div>
-                <div class="content-main">
-                    [: item.content :]
+                <div ng-if="item.question_id" class="content-main">
+                    <a ui-sref="question.detail({id: item.question_id, answer_id: item.id})">[: item.content :]</a>
+                    <div class="gray">
+                        [: item.updated_at :]
+                    </div>
                 </div>
                 <div class="action-set">
                     <div class="comment">comment</div>
