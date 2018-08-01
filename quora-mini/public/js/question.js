@@ -6,11 +6,12 @@
         .service('QuestionService', [
             '$http',
             '$state',
-            function ($http, $state) {
+            'AnswerService',
+            function ($http, $state, AnswerService) {
                 var me = this;
                 me.new_question = {};
                 me.data = {};
-                
+
 
                 
                 /** Jump to new page which supports creating questions */
@@ -45,6 +46,9 @@
                                 if (params.id) {
                                     me.data[params.id] = r.data.data;
                                     me.current_question = r.data.data;
+
+                                    me.its_answers = me.current_question.answers_with_user_info;
+                                    me.its_answers = AnswerService.count_vote(me.its_answers);
                                 } else {
                                     me.data = angular.merge({}, me.data, r.data.data);
                                 }
@@ -53,8 +57,43 @@
                             
                             return false;
                         })
-                }
-                
+                };
+
+
+                /** Vote answers */
+                me.vote = function (config) {
+
+                    /* 调用统计票数函数 */
+                    AnswerService.vote(config)
+                        .then(function (r) {
+
+                            /* 返回数据, 如果投票成功 */
+                            if (r) {
+                                me.update_answer(config.id);
+                            }
+                        })
+                };
+
+
+                /** Update votes of answers */
+                me.update_answer = function (answer_id) {
+                    $http.post('/api/answer/read', {id: answer_id})
+                        .then(function (r) {
+                            console.log('r', r);
+                            if (r.data.status) {
+                                for (var i = 0; i < me.its_answers.length; i++) {
+                                    var answer = me.its_answers[i];
+                                    if (answer.id == answer_id) {
+                                        console.log('answer', answer);
+                                        me.its_answers[i] = r.data.data.data;
+                                        console.log('answer', answer);
+                                        AnswerService.data[answer_id] = r.data.data.data;
+                                    }
+                                }
+                            }
+                        })
+                };
+
             }
         ])
 

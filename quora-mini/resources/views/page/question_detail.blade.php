@@ -16,7 +16,7 @@
 
             <div ng-repeat="item in Question.current_question.answers_with_user_info">
 
-                <div class="vote">
+                <div class="vote ng-scope">
                     <div ng-click="Question.vote({id: item.id, vote: 1})" class="up">👍 [: item.upvote_count :]</div>
                     <div ng-click="Question.vote({id: item.id, vote: 2})" class="down">👎 [: item.downvote_count :]</div>
                 </div>

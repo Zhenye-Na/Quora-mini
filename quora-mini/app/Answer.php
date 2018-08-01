@@ -106,20 +106,24 @@ class Answer extends Model
             return $this->read_by_user_id($user_id);
         }
 
-        /* Check whether this answer exists return error message if not */
+        /* Check whether this answer exists, return error message if not */
         if (rq('id'))
         {
             $answer = $this
                 ->with('user')
                 ->with('users')
                 ->find(rq('id'));
-            
+
+            $answer = $this->count_vote($answer);
+
+
             if (!$answer)
                 return err('Answer not exists!');
+
             return succ(['data' => $answer]);
         }
         
-        /* Check whether this question exists return error message if not */
+        /* Check whether this question exists, return error message if not */
         if (!question_init()->find(rq('question_id')))
             return err('Question not exists!');
         
@@ -170,13 +174,36 @@ class Answer extends Model
         if ($vote == 3) {
             return succ();
         }
-        
-        
+
+
         $answer
             ->users()
             ->attach(session('user_id'), ['vote' => $vote]);
 
         return succ();
+    }
+
+
+    /** Count votes
+     * @param $answer which answer's votes need to be counted
+     * @return add vote count variable to $answer
+     */
+    public function count_vote($answer)
+    {
+        $upvote_count = 0;
+        $downvote_count = 0;
+
+        foreach($answer->users as $user) {
+            if ($user->pivot->vote == 1) {
+                $upvote_count++;
+            } else {
+                $downvote_count++;
+            }
+        }
+
+        $answer->upvote_count = $upvote_count;
+        $answer->downvote_count = $downvote_count;
+        return $answer;
     }
 
 

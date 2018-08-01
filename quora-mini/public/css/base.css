@@ -113,7 +113,6 @@ a {
 
 .container.signup,
 .container.question-add,
-.container.question-detail,
 .container.login,
 .container.reset-password {
     max-width: 500px;
@@ -122,7 +121,8 @@ a {
 
 
 .container.home,
-.container.user {
+.container.user,
+.container.question-detail {
     max-width: 600px;
     margin-top: 15px;
 }

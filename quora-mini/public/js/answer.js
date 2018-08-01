@@ -5,7 +5,8 @@
 
         .service('AnswerService', [
             '$http',
-            function ($http) {
+            '$state',
+            function ($http, $state) {
                 var me = this;
                 me.data = {};
 
@@ -57,7 +58,8 @@
                 me.vote = function (config) {
 
                     if (!config.id || !config.vote) {
-                        console.log('id and vote is required');
+                        // console.log('id and vote is required');
+                        alert("id and vote is required");
                         return;
                     }
 
@@ -72,6 +74,10 @@
 
                     return $http.post('/api/answer/vote', config)
                         .then(function (r) {
+                            if (isNaN(his.id)) {
+                                alert("Please log in first!");
+                                $state.go('login');
+                            }
                             return r.data.status;
                         }, function () {
                             return false;

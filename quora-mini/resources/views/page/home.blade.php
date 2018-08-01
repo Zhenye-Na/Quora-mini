@@ -11,9 +11,7 @@
                 <div ng-click="Timeline.vote({id: item.id, vote: 2})" class="down">👎 [: item.downvote_count :]</div>
             </div>
             
-            
             <div class="feed-item-content">
-
                 <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
                 <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
                 <div ng-if="item.question_id" class="title" ui-sref="question.detail({id: item.question.id})">[: item.question.title :]</div>

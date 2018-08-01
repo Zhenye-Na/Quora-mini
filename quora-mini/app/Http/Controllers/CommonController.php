@@ -42,7 +42,7 @@ class CommonController extends Controller
 
         $data = $data->values()->all();
 
-        return succ(['data' =>$data]);
+        return succ(['data' => $data]);
 
     }
 }
