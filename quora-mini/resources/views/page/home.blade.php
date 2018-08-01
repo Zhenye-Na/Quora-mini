@@ -14,26 +14,20 @@
             
             <div class="feed-item-content">
 
-                <div ng-if="item.question_id" class="content-act ng-binding">[: item.user.username :] added answer</div>
-                <div ng-if="!item.question_id" class="content-act ng-binding">[: item.user.username :] added question</div>
-                <div class="title ng-binding">[: item.title :]</div>
-
-                <div class="content-owner ng-binding">
+                <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
+                <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
+                <div ng-if="item.question_id" class="title" ui-sref="question.detail({id: item.question.id})">[: item.question.title :]</div>
+                <div ui-sref="question.detail({id: item.id})" class="title">[: item.title :]</div>
+                <div class="content-owner">
                     [: item.user.username :]
                     <span class="desc">[: item.user.desc :]</span>
                 </div>
-
-                <div class="content-main ng-binding">
+                <div class="content-main">
                     [: item.content :]
                 </div>
-
-
                 <div class="action-set">
                     <div class="comment">comment</div>
                 </div>
-
-
-
                 <div class="comment-block">
                     <div class="hr"></div>
                     <div class="comment-item-set">

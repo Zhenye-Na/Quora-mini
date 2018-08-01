@@ -10,11 +10,11 @@
                 var me = this;
                 me.data = [];
                 me.current_page = 1;
-                
+                me.no_more_data = false;
                 
                 /** 获取首页数据 */
                 me.get = function (config) {
-                    if (me.pending) return;
+                    if (me.pending || me.no_more_data) return;
 
                     me.pending = true;
 

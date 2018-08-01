@@ -48,6 +48,8 @@ h2 {
 }
 
 
+.container:after,
+.container:before,
 .clearfix:after,
 .clearfix:before {
     content: " ";
@@ -111,6 +113,7 @@ a {
 
 .container.signup,
 .container.question-add,
+.container.question-detail,
 .container.login,
 .container.reset-password {
     max-width: 500px;
@@ -172,7 +175,7 @@ h1, h2 {
 }
 
 .feed-item-content .content-owner .desc,
-.feed-item-content .action-set {
+.action-set {
     color: #5e5e5e;
     /*padding-bottom: 3px;*/
 }
@@ -361,4 +364,14 @@ input, button {
 .info_item > *:last-child {
     float: left;
     width: 80%;
+}
+
+
+.user.container .title {
+    font-weight: 700;
+}
+
+
+.gray {
+    color: gray;
 }

@@ -95,8 +95,13 @@ class Question extends Model
     public function read()
     {
         /* Check whether 'id' is in request arguments, if true return */
-        if (rq('id'))
-            return ['status' => 1, 'msg' => $this->find(rq('id'))];
+        if (rq('id')) {
+            $result = $this
+                ->with('answers_with_user_info')
+                ->find(rq('id'));
+            return ['status' => 1, 'data' => $result];
+
+        }
 
         if (rq('user_id')) {
             $user_id = rq('user_id') === 'self' ?
@@ -150,8 +155,19 @@ class Question extends Model
 
     public function user()
     {
-        return $this
-            ->belongsTo('App\User');
+        return $this->belongsTo('App\User');
+    }
+
+
+    public function answers()
+    {
+        return $this->hasMany('App\Answer');
+    }
+
+
+    public function answers_with_user_info()
+    {
+        return $this->answers()->with('user');
     }
 
 }

@@ -24,6 +24,7 @@ class CommonController extends Controller
 
         /* Retrieve answers */
         $answers = answer_init()
+            ->with('question')
             ->with('users')
             ->with('user')
             ->limit($limit)

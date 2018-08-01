@@ -269,6 +269,11 @@ Route::get('tpl/page/question_add', function() {
 });
 
 
+Route::get('tpl/page/question_detail', function() {
+    return view('page.question_detail');
+});
+
+
 Route::get('tpl/page/user', function() {
     return view('page.user');
 });

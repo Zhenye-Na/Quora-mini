@@ -16,9 +16,17 @@ class User extends Model
         if (!rq('id'))
             return err('User id is required!');
 
-        $id = rq('id') === 'self' ?
-            session('user_id') :
-            rq('id');
+        if (rq('id') === 'self') {
+            if (!$this->is_logged_in())
+                return err('Please log in first!');
+            $id = session('user_id');
+        } else {
+            $id = rq('id');
+        }
+
+//        $id = rq('id') === 'self' ?
+//            session('user_id') :
+//            rq('id');
 
         $get = ['id', 'username', 'avatar_url', 'intro'];
         

@@ -7,11 +7,11 @@
         <div class="basic">
             <div class="info_item clearfix">
                 <div>Username</div>
-                <div>[: User.self_data.username :]</div>
+                <div>[: User.current_user.username :]</div>
             </div>
             <div class="info_item clearfix">
                 <div>Intro</div>
-                <div>[: User.self_data.intro || '该用户很懒,什么都不想写...' :]</div>
+                <div>[: User.current_user.intro || '该用户很懒, 什么都不想写...' :]</div>
             </div>
         </div>
 
@@ -29,13 +29,14 @@
 <!--            </div>-->
 
 
-            <div class="title">
+
+            <div ui-sref="" class="title">
                 [: value.question.title :]
             </div>
             [: value.content :]
 
             <div class="action-set">
-                <div class="comment">[: value.updated_at :]</div>
+                <div class="comment">Updated on [: value.updated_at :]</div>
             </div>
 
         </div>
