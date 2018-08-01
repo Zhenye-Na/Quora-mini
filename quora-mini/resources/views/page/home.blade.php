@@ -26,25 +26,16 @@
                         [: item.updated_at :]
                     </div>
                 </div>
+
+                <div comment-block>
+                    commentcommentcommentcommentcommentcommentcomment
+                </div>
+
+
                 <div class="action-set">
                     <div class="comment">comment</div>
                 </div>
-                <div class="comment-block">
-                    <div class="hr"></div>
-                    <div class="comment-item-set">
-                        <div class="rect"></div>
-
-                        <div class="comment-item clearfix">
-                            <div class="user">UsernameIsHere</div>
-                            <div class="comment-content">
-                                Most of the time when someone argues Superman losing a fight, it’s because of an inherent
-                                limitation of his character.kryptonite-bearing fist against his jaw. Thor, too, has
-                                inherent limitations.ryptonite-bearing fist agaryptonite-bearing fist agaryptonite-bearing fist aga
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                
 
 
 

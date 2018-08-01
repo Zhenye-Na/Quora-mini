@@ -5,6 +5,14 @@
         id: parseInt($('html').attr('user-id'))
     };
 
+    window.helper = {};
+    helper.obj_length = function (obj) {
+        if(obj === null || obj === undefined) {
+            return null
+        }
+        return Object.keys(obj).length;
+    };
+    
     angular.module('quora-mini', [
         'ui.router',
         'common',
@@ -59,6 +67,9 @@
             '$scope',
             function ($scope) {
                 $scope.his = his;
+
+                $scope.helper = helper;
+                
             }
         ])
     

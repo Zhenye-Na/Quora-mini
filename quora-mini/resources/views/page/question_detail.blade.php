@@ -27,28 +27,42 @@
                     <div>
                         <span ui-sref="user({id: item.user.id})">[: item.user.username :]</span>
                     </div>
-                    <div>
-                        [: item.content :]
+
+                    <div>[: item.content :]
+
+                        <div class="action-set">
+                            <span ng-click="item.show_comment = !item.show_comment">
+                                <span ng-if="item.show_comment">Cancel</span>
+                                Comment
+                            </span>
+
+                            <span class="gray">
+                                <a ng-click="Answer.answer_form = item"
+                                   ng-if="item.user_id == his.id"
+                                   class="anchor">
+                                    Edit
+                                </a>
+
+                                <a ng-click="Answer.delete(item.id)"
+                                   ng-if="item.user_id == his.id"
+                                   class="anchor">
+                                    Delete
+                                </a>
+
+                                <a>
+                                    [: item.updated_at :]
+                                </a>
+                            </span>
+                        </div>
+
                     </div>
-
-                    <a ng-click="Answer.answer_form = item"
-                       ng-if="item.user_id == his.id" 
-                       class="anchor">
-                        Edit
-                    </a>
-
-                    <a ng-click="Answer.delete(item.id)"
-                       ng-if="item.user_id == his.id"
-                       class="anchor">
-                        Delete
-                    </a>
-                    
-                    <div class="gray">
-                        [: item.updated_at :]
-                    </div>
-                    <div class="hr"></div>
-
                 </div>
+
+                <div ng-if="item.show_comment" comment-block answer-id="item.id">
+                    comment comment comment comment
+                </div>
+
+                <div class="hr"></div>
 
             </div>
 

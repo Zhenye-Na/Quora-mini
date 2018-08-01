@@ -71,18 +71,26 @@ class Comment extends Model
 
         if (rq('question_id'))
         {
-            $question = question_init()->find(rq('question_id'));
+            $question = question_init()
+                ->with('user')
+                ->find(rq('question_id'));
             if (!$question)
                 return err('Question not exists!');
 
-            $data = $this->where('question_id', rq('question_id'));
+            $data = $this
+                ->with('user')
+                ->where('question_id', rq('question_id'));
         } else
         {
-            $answer = question_init()->find(rq('answer_id'));
+            $answer = question_init()
+                ->with('user')
+                ->find(rq('answer_id'));
             if (!$answer)
                 return err('Answer not exists!');
 
-            $data = $this->where('answer_id', rq('answer_id'));
+            $data = $this
+                ->with('user')
+                ->where('answer_id', rq('answer_id'));
         }
 
         $data = $data->get()->keyBy('id');
@@ -114,6 +122,12 @@ class Comment extends Model
         return $comment->delete() ?
             suc(['id' => $comment->id]) :
             err('db delete fail');
+    }
+
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
 }

@@ -49,6 +49,40 @@
     <div ui-view></div>
 </div>
 
+<script type="text/ng-template" id="comment.tpl">
+    <div class="comment-block">
+        <div class="hr"></div>
+
+        <div class="comment-item-set">
+            <div class="rect"></div>
+
+
+            <div ng-if="!helper.obj_length(data.data)" class="gray tac well">暂无评论</div>
+            <div ng-if="helper.obj_length(data.data)"
+                 ng-repeat="item in data.data"
+                 class="comment-item clearfix">
+                <div class="user">[: item.user.username :]: </div>
+                <div class="comment-content">
+                    [: item.content :]
+                </div>
+            </div>
+
+        </div>
+
+        <div class="input-group">
+            <form ng-submit="Answer.comment_create.add_comment()" class="comment-form">
+                <input type="text"
+                       ng-model="Answer.new_comment.content"
+                       placeholder="Please type your comment here">
+                <button class="primary"
+                        type="submit">Comment</button>
+            </form>
+            
+        </div>
+
+    </div>
+
+</script>
 
 </body>
 

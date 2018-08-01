@@ -158,8 +158,65 @@
                 };
 
 
+                /** Add comment */
+                me.add_comment = function () {
+                    return $http.post('/api/comment/add', me.new_comment)
+                        .then(function (r) {
+                            return r.data.status;
+                        })
+                }
+
             }
         ])
 
+    
+        .directive('commentBlock', [
+            '$http',
+            'AnswerService',
+            function ($http, AnswerService) {
+                var o = {};
+                o.templateUrl = 'comment.tpl';
+                
+                o.scope = {
+                    answer_id: '=answerId'
+
+                };
+
+                o.link = function (sco, ele, attr) {
+                    sco.Answer = AnswerService;
+
+                    sco.comment_create = {};
+                    sco.data = {};
+                    sco.helper = helper;
+
+                    function get_comment_list() {
+                        return $http.post('/api/comment/read', {answer_id: sco.answer_id})
+                            .then(function (r) {
+                                if (r.data.status)
+                                    sco.data = angular.merge({}, sco.data, r.data.data);
+                            });
+                    }
+
+
+                    if (sco.answer_id) {
+                        get_comment_list();
+                    }
+
+                    sco.comment_create.add_comment = function () {
+                        AnswerService.new_comment.answer_id = sco.answer_id;
+                        AnswerService.add_comment()
+                            .then(function (r) {
+                                if (r) {
+                                    AnswerService.new_comment = {};
+                                    get_comment_list();
+                                }
+
+                            })
+                    }
+
+                };
+                return o;
+            }
+        ])
 
 })();

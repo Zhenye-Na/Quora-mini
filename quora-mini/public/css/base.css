@@ -210,7 +210,7 @@ h1, h2 {
 
 
 .comment-block {
-    display: none;
+    /*display: none;*/
 }
 
 
@@ -401,3 +401,25 @@ a {
     /*float: right;*/
     /*width: 90%;*/
 /*}*/
+
+
+.comment-form input,
+.comment-form [type="submit"] {
+    float: left;
+}
+
+
+.comment-form input {
+    width: 80%;
+}
+
+
+.comment-form [type="submit"] {
+    width: 12%;
+    margin-left: 1%;
+}
+
+
+.well {
+    padding: 10px;
+}
