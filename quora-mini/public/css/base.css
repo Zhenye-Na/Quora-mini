@@ -423,3 +423,8 @@ a {
 .well {
     padding: 10px;
 }
+
+
+.gray_card {
+    background: rgba(0, 0, 0, .05);
+}

@@ -45,7 +45,7 @@ class Question extends Model
 
         /* Check whether id exists */
         if (!rq('id'))
-            return err('User id is required!');
+            return err('id is required!');
 
         /* Get particular model from 'id' */
         $question = $this->find(rq('id'));
@@ -61,12 +61,11 @@ class Question extends Model
         if (rq('title'))
             $question->title = rq('title');
 
-        if (rq('dsec'))
+        if (rq('desc'))
             $question->desc = rq('desc');
 
-
         /* Save to database */
-        return $this->save() ?
+        return $question->save() ?
             succ(['id' => $question->id]) :
             err('db update failed!');
 

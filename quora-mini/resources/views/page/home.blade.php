@@ -12,10 +12,20 @@
             </div>
 
             <div class="feed-item-content">
-                <div ng-if="item.question_id" class="content-act">[: item.user.username :] added answer</div>
-                <div ng-if="!item.question_id" class="content-act">[: item.user.username :] added question</div>
-                <div ng-if="item.question_id" class="title" ui-sref="question.detail({id: item.question.id})">[: item.question.title :]</div>
-                <div ui-sref="question.detail({id: item.id})" class="title">[: item.title :]</div>
+                <div ng-if="item.question_id" class="content-act">
+                    <a ui-sref="user({id: item.user.id})">[: item.user.username :]</a>
+                    added answer
+                </div>
+                <div ng-if="!item.question_id" class="content-act">
+                    <a ui-sref="user({id: item.user.id})">[: item.user.username :]</a>
+                    added question
+                </div>
+                <div ng-if="item.question_id" class="title"
+                     ui-sref="question.detail({id: item.question.id})">[: item.question.title :]
+                </div>
+                <div ui-sref="question.detail({id: item.id})"
+                     class="title">[: item.title :]
+                </div>
                 <div class="content-owner">
                     [: item.user.username :]
                     <span class="desc">[: item.user.desc :]</span>
@@ -27,16 +37,34 @@
                     </div>
                 </div>
 
-                <div comment-block>
-                    commentcommentcommentcommentcommentcommentcomment
-                </div>
-
-
-                <div class="action-set">
-                    <div class="comment">comment</div>
-                </div>
                 
+                <div class="action-set">
+                    <span class="anchor gray" ng-click="item.show_comment = !item.show_comment">
+                        <span ng-if="item.show_comment">Cancel</span>
+                        Comment
+                    </span>
 
+                    <span class="gray">
+                        <a ng-click="Answer.answer_form = item"
+                           ng-if="item.user_id == his.id"
+                           class="anchor">
+                            Edit
+                        </a>
+                        <a ng-click="Answer.delete(item.id)"
+                           ng-if="item.user_id == his.id"
+                           class="anchor">
+                            Delete
+                        </a>
+                        <a>
+                            [: item.updated_at :]
+                        </a>
+                    </span>
+                </div>
+
+
+                <div ng-if="item.show_comment" comment-block answer-id="item.id">
+                    [: item.content :]
+                </div>
 
 
             </div>
@@ -45,9 +73,6 @@
 
     </div>
 
-    <!--        <div ng-if="Timeline.pending" class="tac">-->
-    <!--            <img src="https://c.s-microsoft.com/en-us/CMSImages/minifindstore_spin.gif?version=45117834-d17e-3a16-5765-62399907b530" width="5%">-->
-    <!--        </div>-->
     <div ng-if="Timeline.no_more_data" class="tac">
         刷呀刷... 刷不出来了 _(:з」∠)_
     </div>

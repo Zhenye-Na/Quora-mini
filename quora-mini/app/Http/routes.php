@@ -249,31 +249,37 @@ Route::any('test', function() {
 });
 
 
+/** Homepage */
 Route::get('tpl/page/home', function() {
     return view('page.home');
 });
 
 
+/** Sign up page */
 Route::get('tpl/page/signup', function() {
     return view('page.signup');
 });
 
 
+/** Log in page */
 Route::get('tpl/page/login', function() {
     return view('page.login');
 });
 
 
+/** Add question page */
 Route::get('tpl/page/question_add', function() {
     return view('page.question_add');
 });
 
 
+/** Question details */
 Route::get('tpl/page/question_detail', function() {
     return view('page.question_detail');
 });
 
 
+/** User info page */
 Route::get('tpl/page/user', function() {
     return view('page.user');
 });

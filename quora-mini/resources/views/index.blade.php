@@ -23,7 +23,7 @@
             <div ui-sref="home" class="navbar-item brand">Quora<sup>mini</sup></div>
             <form ng-submit="Question.go_add_question()" id="quick_ask" ng-controller="QuestionAddController">
                 <div class="navbar-item">
-                    <input ng-model="Question.new_question.title" type="text">
+                    <input ng-model="Question.new_question.title" type="text" placeholder="Search 🤓">
                 </div>
                 <div class="navbar-item">
                     <button type="submit">Add question</button>

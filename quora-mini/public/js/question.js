@@ -12,7 +12,6 @@
                 me.new_question = {};
                 me.data = {};
 
-
                 
                 /** Jump to new page which supports creating questions */
                 me.go_add_question = function () {
@@ -22,13 +21,18 @@
                 
                 /** Create question */
                 me.add = function () {
+                    if(!his.id) {
+                        alert("Please log in first!");
+                        $state.go('login');
+                    }
+
                     if (!me.new_question.title)
                         return;
 
                     $http.post('/api/question/add', me.new_question)
                         .then(function (r) {
                             if (r.data.status) {
-                                console.log(r.data);
+                                // console.log(r.data);
                                 me.new_question = {};
                                 $state.go('home', {}, {reload: true});
                             }
@@ -80,7 +84,6 @@
                 me.update_answer = function (answer_id) {
                     $http.post('/api/answer/read', {id: answer_id})
                         .then(function (r) {
-                            console.log('r', r);
                             if (r.data.status) {
                                 for (var i = 0; i < me.its_answers.length; i++) {
                                     var answer = me.its_answers[i];
@@ -92,6 +95,21 @@
                             }
                         })
                 };
+
+
+                /** Update question */
+                me.update_question = function () {
+                    if (!me.current_question.title)
+                        return false;
+
+                    $http.post('/api/question/change', me.current_question)
+                        .then(function (r) {
+                            if (r.data.status) {
+                                me.show_update_form = false;
+                            }
+                        })
+                }
+
 
             }
         ])
@@ -108,8 +126,9 @@
 
         .controller('QuestionAddController', [
             '$scope',
+            '$state',
             'QuestionService',
-            function ($scope, QuestionService) {
+            function ($scope, $state, QuestionService) {
                 $scope.Question = QuestionService;
             }
         ])
