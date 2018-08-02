@@ -18,7 +18,6 @@
                         .then(function (r) {
                             if (r.data.status) {
                                 me.signup_data = {};
-                                alert("Please log in first!");
                                 $state.go('login');
                             }
                         })
